@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dotted-background {
+  background-image: radial-gradient(circle, gray 1px, transparent 2px);
+  background-size: 20px 20px; 
+}
+.dotted-nav {
+  position: relative;
+  background-color: rgba(35, 32, 32, 1); 
+  background-image: radial-gradient(circle, rgb(159, 157, 157) 3px, transparent 1px);
+  background-size: 20px 20px;
+  backdrop-filter: blur(10px); 
+  background-blend-mode: overlay;
+}
