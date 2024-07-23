@@ -18,3 +18,16 @@ model User {
   resetToken       String?
   resetTokenExpiry DateTime?
 }
+
+// model Configuration {
+//   id         String @id @default(auto()) @map("_id") @db.ObjectId
+//   key         String @unique
+//   value       String
+// }
+
+// model MailSettings {
+//   id         String   @id @default(auto()) @map("_id") @db.ObjectId
+//   email      String   @unique
+//   password   String   // Store the Gmail password (encrypted or hashed)
+// }
+
