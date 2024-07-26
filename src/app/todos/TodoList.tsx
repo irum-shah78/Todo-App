@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import  useTodo  from '../../hooks/useTodos';
-import CardHeader from '../../components/cards/CardHeader';
-import CardBody from '../../components/cards/CardBody';
 
 const TodoList: React.FC = () => {
   const { todos, createTodo, removeTodo, editTodo } = useTodo();

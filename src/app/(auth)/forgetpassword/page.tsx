@@ -17,7 +17,7 @@ export default function ForgetPassword() {
     setLoading(true);
     try {
       const response = await axios.post('/forgetpassword', { email });
-      toast.success("Password reset link sent to your email.");
+      toast.success(response.data.message);
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error("Email not found. Please check and try again.");

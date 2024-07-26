@@ -1,28 +1,69 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/index';
-import { fetchTodos, addTodo, deleteTodo, updateTodo } from '../store/TodoSlice';
+// // src/hooks/useTodos.ts
+// import { useRouter } from 'next/navigation';
+
+// const useTodo = () => {
+//   const router = useRouter();
+
+//   const createTodo = async (name: string, themeName: string) => {
+//     try {
+//       const response = await fetch('/api/todos', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ name, themeName }),
+//       });
+//       if (!response.ok) throw new Error('Failed to create todo');
+//       await response.json();
+//       router.push('/todos');
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+
+//   return { createTodo };
+// };
+
+// export default useTodo;
+
+
+// src/hooks/useTodos.ts
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+interface Todo {
+  name: string;
+  themeName: string;
+}
 
 const useTodo = () => {
-  const dispatch = useDispatch();
-  const { todos } = useSelector((state: RootState) => state.todo);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  const getTodos = () => {
-    dispatch(fetchTodos());
+  const fetchTodos = async () => {
+    try {
+      const response = await axios.get('/api/todos'); // Adjust the API endpoint as needed
+      setTodos(response.data);
+    } catch (error) {
+      console.error('Failed to fetch todos:', error);
+    }
   };
 
-  const createTodo = (name: string, theme: string) => {
-    dispatch(addTodo({ name, theme }));
+  const createTodo = async (listName: string, themeName: string) => {
+    try {
+      const response = await axios.post('/api/todos', { name: listName, themeName }); // Adjust the API endpoint as needed
+      console.log('Response from createTodo:', response); // Add logging for the response
+      fetchTodos(); // Refresh the list of todos after adding a new one
+    } catch (error) {
+      console.error('Failed to create todo:', error);
+      throw error;
+    }
   };
 
-  const removeTodo = (id: string) => {
-    dispatch(deleteTodo(id));
-  };
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
-  const editTodo = (id: string, name: string, theme: string) => {
-    dispatch(updateTodo({ id, name, theme }));
-  };
-
-  return { todos, getTodos, createTodo, removeTodo, editTodo };
+  return { todos, createTodo };
 };
 
 export default useTodo;

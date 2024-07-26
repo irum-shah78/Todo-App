@@ -1,14 +1,3 @@
-// export default function HomePage(){
-//   return (
-//     <main>
-//       <div>Protected Dashboard, hello: </div>
-//       <div>
-//         Logout
-//       </div>
-//     </main>
-//   )
-// }
-
 import LogoutButton from "@/components/logout/LogoutButton";
 import { authOptions } from "@/libs/AuthOptions"
 import { getServerSession } from "next-auth"

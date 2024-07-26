@@ -18,3 +18,11 @@ model User {
   resetToken       String?
   resetTokenExpiry DateTime?
 }
+
+model Todo {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  themeName String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
