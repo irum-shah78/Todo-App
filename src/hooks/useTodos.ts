@@ -1,69 +1,110 @@
-// // src/hooks/useTodos.ts
-// import { useRouter } from 'next/navigation';
+// import { useState, useEffect, useCallback } from 'react';
+// import axios from 'axios';
+// import { useSession } from 'next-auth/react';
+
+// interface Todo {
+//   id: string;
+//   name: string;
+// }
 
 // const useTodo = () => {
-//   const router = useRouter();
+//   const { data: session } = useSession();
+//   const [todos, setTodos] = useState<Todo[]>([]);
 
-//   const createTodo = async (name: string, themeName: string) => {
+//   const fetchTodos = useCallback(async () => {
+//     if (!session?.user?.email) return; 
+
 //     try {
-//       const response = await fetch('/api/todos', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ name, themeName }),
+//       console.log('Fetching todos for user:', session.user.email);
+//       const response = await axios.get('/', {
+//         params: { userEmail: session.user.email } 
 //       });
-//       if (!response.ok) throw new Error('Failed to create todo');
-//       await response.json();
-//       router.push('/todos');
+//       console.log('Fetched todos:', response.data);
+//       setTodos(response.data);
 //     } catch (error) {
-//       console.error(error);
+//       console.error('Failed to fetch todos:', error);
+//     }
+//   }, [session]);
+
+//   const createTodo = async ({ listName, userEmail }: { listName: string; userEmail: string }) => {
+//     try {
+//       console.log('Creating todo with name:', listName, 'for user:', userEmail);
+//       await axios.post('/', {
+//         name: listName,
+//         user: { email: userEmail } 
+//       });
+//       fetchTodos(); 
+//     } catch (error) {
+//       console.error('Failed to create todo:', error);
+//       throw error;
 //     }
 //   };
 
-//   return { createTodo };
+//   useEffect(() => {
+//     fetchTodos();
+//   }, [fetchTodos]);
+
+//   return { todos, createTodo };
 // };
 
 // export default useTodo;
 
 
-// src/hooks/useTodos.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 interface Todo {
+  id: string;
   name: string;
-  themeName: string;
 }
 
-const useTodo = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+interface UseTodoState {
+  todos: Todo[];
+  createTodo: ({ listName, userEmail }: { listName: string; userEmail: string }) => Promise<void>;
+  error: string | null;
+}
 
-  const fetchTodos = async () => {
+const useTodo = (): UseTodoState => {
+  const { data: session } = useSession();
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchTodos = useCallback(async () => {
+    if (!session?.user?.email) return;
+
     try {
-      const response = await axios.get('/api/todos'); // Adjust the API endpoint as needed
+      const response = await axios.get('todo', {
+        params: { userEmail: session.user.email }
+      });
       setTodos(response.data);
+      setError(null); // Clear error if fetch is successful
     } catch (error) {
       console.error('Failed to fetch todos:', error);
+      setError('Failed to fetch todos');
     }
-  };
+  }, [session]);
 
-  const createTodo = async (listName: string, themeName: string) => {
+  const createTodo = async ({ listName, userEmail }: { listName: string; userEmail: string }) => {
     try {
-      const response = await axios.post('/api/todos', { name: listName, themeName }); // Adjust the API endpoint as needed
-      console.log('Response from createTodo:', response); // Add logging for the response
-      fetchTodos(); // Refresh the list of todos after adding a new one
+      await axios.post('todo', {
+        name: listName,
+        user: { email: userEmail }
+      });
+      fetchTodos();
+      setError(null); // Clear error if creation is successful
     } catch (error) {
       console.error('Failed to create todo:', error);
+      setError('Failed to create todo');
       throw error;
     }
   };
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [fetchTodos]);
 
-  return { todos, createTodo };
+  return { todos, createTodo, error };
 };
 
 export default useTodo;

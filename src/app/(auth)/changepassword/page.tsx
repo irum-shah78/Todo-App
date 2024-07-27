@@ -118,7 +118,7 @@ export default function ResetPassword() {
     }
     setLoading(true);
     try {
-      const response = await axios.post('/changepassword', { token, password });
+      const response = await axios.post('api/changepassword', { token, password });
       toast.success(response.data.message);
       router.push("/signin");
     } catch (error: any) {

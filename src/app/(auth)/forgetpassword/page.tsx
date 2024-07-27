@@ -16,7 +16,7 @@ export default function ForgetPassword() {
     }
     setLoading(true);
     try {
-      const response = await axios.post('/forgetpassword', { email });
+      const response = await axios.post('api/forgetpassword', { email });
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response && error.response.status === 400) {

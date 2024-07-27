@@ -16,3 +16,17 @@
   backdrop-filter: blur(10px); 
   background-blend-mode: overlay;
 }
+
+
+:root {
+  --primary-color: #222222;
+  --background-color: #f0f0f0;
+  --accent-color: #ff6600;
+}
+
+body {
+  color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+/* Add more styles using CSS variables as needed */

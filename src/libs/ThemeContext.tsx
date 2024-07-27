@@ -1,117 +1,27 @@
-// import React, { createContext, useContext, useState, ReactNode } from 'react';
-// import themes from '../constants/ThemeColors';
+'use client';
 
-// interface ThemeContextProps {
-//   themeName: keyof typeof themes;
-//   setThemeName: (theme: keyof typeof themes) => void;
-//   currentTheme: typeof themes[keyof typeof themes];
-// }
-
-// const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
-
-// export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-//   const [themeName, setThemeName] = useState<keyof typeof themes>('Vintage Garden');
-//   const currentTheme = themes[themeName];
-
-//   return (
-//     <ThemeContext.Provider value={{ themeName, setThemeName, currentTheme }}>
-//       {children}
-//     </ThemeContext.Provider>
-//   );
-// };
-
-// export const useTheme = (): ThemeContextProps => {
-//   const context = useContext(ThemeContext);
-//   if (!context) {
-//     throw new Error('useTheme must be used within a ThemeProvider');
-//   }
-//   return context;
-// };
-
-
-// import React, { createContext, useContext, useState, ReactNode } from 'react';
-// import themes from '../constants/ThemeColors';
-
-// interface ThemeContextProps {
-//   themeName: keyof typeof themes;
-//   setThemeName: (theme: keyof typeof themes) => void;
-//   currentTheme: typeof themes[keyof typeof themes];
-// }
-
-// const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
-
-// export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-//   const [themeName, setThemeName] = useState<keyof typeof themes>('Vintage Garden');
-//   const currentTheme = themes[themeName];
-
-//   return (
-//     <ThemeContext.Provider value={{ themeName, setThemeName, currentTheme }}>
-//       {children}
-//     </ThemeContext.Provider>
-//   );
-// };
-
-// export const useTheme = (): ThemeContextProps => {
-//   const context = useContext(ThemeContext);
-//   if (!context) {
-//     console.error('useTheme must be used within a ThemeProvider');
-//     throw new Error('useTheme must be used within a ThemeProvider');
-//   }
-//   return context;
-// };
-
-
-// // src/libs/ThemeContext.tsx
-// "use client"; // Add this directive to ensure this file is treated as a client component
-
-// import React, { createContext, useContext, useState, ReactNode } from 'react';
-// import themes from '../constants/ThemeColors';
-
-// interface ThemeContextProps {
-//   themeName: keyof typeof themes;
-//   setThemeName: (theme: keyof typeof themes) => void;
-//   currentTheme: typeof themes[keyof typeof themes];
-// }
-
-// const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
-
-// export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-//   const [themeName, setThemeName] = useState<keyof typeof themes>('Vintage Garden');
-//   const currentTheme = themes[themeName];
-
-//   return (
-//     <ThemeContext.Provider value={{ themeName, setThemeName, currentTheme }}>
-//       {children}
-//     </ThemeContext.Provider>
-//   );
-// };
-
-// export const useTheme = (): ThemeContextProps => {
-//   const context = useContext(ThemeContext);
-//   if (!context) {
-//     console.error('useTheme must be used within a ThemeProvider');
-//     throw new Error('useTheme must be used within a ThemeProvider');
-//   }
-//   return context;
-// };
-
-
-"use client"; // Add this directive to ensure this file is treated as a client component
-
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import themes from '../constants/ThemeColors';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import themes, { ThemeName } from '../constants/ThemeColors';
 
 interface ThemeContextProps {
-  themeName: keyof typeof themes | null;
-  setThemeName: (theme: keyof typeof themes) => void;
-  currentTheme: typeof themes[keyof typeof themes] | null;
+  themeName: ThemeName | null;
+  setThemeName: (theme: ThemeName) => void;
+  currentTheme: typeof themes[ThemeName] | null;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [themeName, setThemeName] = useState<keyof typeof themes | null>(null);
+  const [themeName, setThemeName] = useState<ThemeName | null>(null);
   const currentTheme = themeName ? themes[themeName] : null;
+
+  useEffect(() => {
+    if (currentTheme) {
+      document.documentElement.style.setProperty('--primary-color', currentTheme.primary);
+      document.documentElement.style.setProperty('--background-color', currentTheme.background);
+      document.documentElement.style.setProperty('--accent-color', currentTheme.accent);
+    }
+  }, [currentTheme]);
 
   return (
     <ThemeContext.Provider value={{ themeName, setThemeName, currentTheme }}>
