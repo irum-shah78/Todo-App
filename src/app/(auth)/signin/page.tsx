@@ -8,6 +8,7 @@ import Header from '@/components/header/Header';
 import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
+
   const router = useRouter();
 
   useEffect(() => {
@@ -25,12 +26,13 @@ export default function SignIn() {
       email,
       password,
       redirect: false,
+      callbackUrl: "/todos/todo"
     });
 
     if (signinResponse?.ok) {
       toast.success("Successfully Logged in!");
       setTimeout(() => {
-        router.push("../../todos/todo");
+        router.push("/todos/todo");
       }, 2000);
     } else if (signinResponse?.error) {
       toast.error(signinResponse.error);
@@ -41,17 +43,20 @@ export default function SignIn() {
 
   const handleGoogleSignIn = async () => {
     setLoadingGoogle(true);
-    const googleSigninResponse = await signIn('google', { redirect: false });
-
+    const googleSigninResponse = await signIn('google', {
+      redirect: false,
+      callbackUrl: "/todos/todo"
+    });
+  
     if (googleSigninResponse?.ok) {
       toast.success("Successfully Logged in with Google!");
       setTimeout(() => {
-        router.push("todos/todo");
+        router.push("/todos/todo");
       }, 2000);
     } else if (googleSigninResponse?.error) {
       toast.error(googleSigninResponse.error);
     }
-
+  
     setLoadingGoogle(false);
   };
 

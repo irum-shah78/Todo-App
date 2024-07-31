@@ -8,7 +8,7 @@ import Header from '@/components/appheader/Header';
 import { useSession } from 'next-auth/react';
 
 const AddListPage: React.FC = () => {
-  // const { createTodo } = useTodo();
+  const { addTodo } = useTodo();
   const { data: session } = useSession();
   const [listName, setListName] = useState('');
   const router = useRouter();
@@ -18,19 +18,21 @@ const AddListPage: React.FC = () => {
       const userEmail = session?.user?.email;
       if (userEmail) {
         try {
-          // await createTodo({ listName, userEmail });
+          await addTodo(listName, userEmail);
           setListName('');
           toast.success('List added successfully!');
           setTimeout(() => {
-            router.push('todo');
+            router.push('/todos/todo');
           }, 2000);
         } catch (error) {
           console.error('Failed to add list:', error);
           toast.error('Failed to add list');
         }
       } else {
-        toast.error('Please enter the list name');
+        toast.error('User not found');
       }
+    } else {
+      toast.error('Please enter the list name');
     }
   };
 
@@ -44,11 +46,12 @@ const AddListPage: React.FC = () => {
               type="text"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
-              placeholder="list name"
+              placeholder="List name"
               className="w-80 p-2 bg-customBackground text-customText border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-3"
             />
           </div>
 
+          {/* Add your theme buttons here */}
           <div className='flex items-center justify-center mt-6 gap-3'>
             <button className='bg-vintage-garden-background text-vintage-garden-primary text-lg border-4 border-vintage-garden-accent rounded-3xl px-4 py-1'>
               Vintage Garden

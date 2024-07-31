@@ -1,5 +1,5 @@
+// import axiosInstance from '@/libs/axios';
 // import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import axios from 'axios';
 
 // interface Todo {
 //   id: string;
@@ -9,29 +9,33 @@
 
 // interface TodoState {
 //   todos: Todo[];
+//   status: 'idle' | 'loading' | 'succeeded' | 'failed';
+//   error: string | null;
 // }
 
 // const initialState: TodoState = {
 //   todos: [],
+//   status: 'idle',
+//   error: null,
 // };
 
 // export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-//   const response = await axios.get('/api/todo');
+//   const response = await axiosInstance.get('/todo');
 //   return response.data;
 // });
 
 // export const addTodo = createAsyncThunk('todos/addTodo', async (todo: Omit<Todo, 'id'>) => {
-//   const response = await axios.post('/api/todo', todo);
+//   const response = await axiosInstance.post('/todo', todo);
 //   return response.data;
 // });
 
 // export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: string) => {
-//   await axios.delete(`/api/todo/${id}`);
+//   await axiosInstance.delete(`/todo/${id}`);
 //   return id;
 // });
 
 // export const updateTodo = createAsyncThunk('todos/updateTodo', async (todo: Todo) => {
-//   const response = await axios.put(`/api/todos/${todo.id}`, todo);
+//   const response = await axiosInstance.put(`/todo/${todo.id}`, todo);
 //   return response.data;
 // });
 
@@ -40,30 +44,38 @@
 //   initialState,
 //   reducers: {},
 //   extraReducers: (builder) => {
-//     builder.addCase(fetchTodos.fulfilled, (state, action) => {
-//       state.todos = action.payload;
-//     });
-//     builder.addCase(addTodo.fulfilled, (state, action) => {
-//       state.todos.push(action.payload);
-//     });
-//     builder.addCase(deleteTodo.fulfilled, (state, action) => {
-//       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-//     });
-//     builder.addCase(updateTodo.fulfilled, (state, action) => {
-//       const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
-//       if (index !== -1) {
-//         state.todos[index] = action.payload;
-//       }
-//     });
+//     builder
+//       .addCase(fetchTodos.pending, (state) => {
+//         state.status = 'loading';
+//       })
+//       .addCase(fetchTodos.fulfilled, (state, action) => {
+//         state.status = 'succeeded';
+//         state.todos = action.payload;
+//       })
+//       .addCase(fetchTodos.rejected, (state, action) => {
+//         state.status = 'failed';
+//         state.error = action.error.message || 'Failed to fetch todos';
+//       })
+//       .addCase(addTodo.fulfilled, (state, action) => {
+//         state.todos.push(action.payload);
+//       })
+//       .addCase(deleteTodo.fulfilled, (state, action) => {
+//         state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+//       })
+//       .addCase(updateTodo.fulfilled, (state, action) => {
+//         const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
+//         if (index !== -1) {
+//           state.todos[index] = action.payload;
+//         }
+//       });
 //   },
 // });
 
 // export default todoSlice.reducer;
 
 
-
+import axiosInstance from '@/libs/axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 interface Todo {
   id: string;
@@ -83,24 +95,23 @@ const initialState: TodoState = {
   error: null,
 };
 
-// Async Thunks
-export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-  const response = await axios.get('/api/todo');
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async (email: string) => {
+  const response = await axiosInstance.get(`/?email=${email}`);
   return response.data;
 });
 
-export const addTodo = createAsyncThunk('todos/addTodo', async (todo: Omit<Todo, 'id'>) => {
-  const response = await axios.post('/api/todo', todo);
+export const addTodo = createAsyncThunk('todos/addTodo', async ({ name, email }: { name: string, email: string }) => {
+  const response = await axiosInstance.post('/', { name, email });
   return response.data;
 });
 
 export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: string) => {
-  await axios.delete(`/api/todo/${id}`);
+  await axiosInstance.delete(`/${id}`);
   return id;
 });
 
 export const updateTodo = createAsyncThunk('todos/updateTodo', async (todo: Todo) => {
-  const response = await axios.put(`/api/todo/${todo.id}`, todo);
+  const response = await axiosInstance.put(`/${todo.id}`, todo);
   return response.data;
 });
 

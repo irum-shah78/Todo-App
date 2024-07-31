@@ -31,7 +31,7 @@ export default function ResetPassword() {
     }
     setLoading(true);
     try {
-      const response = await axios.post('api/changepassword', { token, password });
+      const response = await axios.post('api/resetpassword', { token, password });
       toast.success(response.data.message);
       router.push("/signin");
     } catch (error: any) {
@@ -71,7 +71,7 @@ export default function ResetPassword() {
               className="w-full p-2 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl mt-2"
               disabled={loading}
             >
-              {loading ? "Resetting..." : "Change Password"}
+              {loading ? "Resetting..." : "Reset Password"}
             </button>
           </form>
         </div>

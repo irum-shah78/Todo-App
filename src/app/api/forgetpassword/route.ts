@@ -24,7 +24,7 @@ export const POST = async (req: any) => {
     },
   });
 
-  const resetUrl = `${process.env.NEXTAUTH_URL}/changepassword?token=${resetToken}`;
+  const resetUrl = `${process.env.NEXTAUTH_URL}/resetpassword?token=${resetToken}`;
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
