@@ -1,40 +1,61 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import toast, { Toaster } from 'react-hot-toast';
-import useTodo from '../../../hooks/useTodos';
-import Header from '@/components/appheader/Header';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Header from '@/components/appheader/Header';
+import useTodo from '../../../../hooks/useTodos';
+import toast, { Toaster } from 'react-hot-toast';
 
-const AddListPage: React.FC = () => {
-  const { addTodo } = useTodo();
-  const { data: session } = useSession();
-  const [listName, setListName] = useState('');
+interface ParamsType {
+  id: string;
+}
+
+const EditListPage: React.FC = () => {
+  const params = useParams();
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const { todos, getTodos, updateTodo, error } = useTodo();
+  const [todoName, setTodoName] = useState<string>('');
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const [localError, setLocalError] = useState<string | null>(null);
+  const { id } = params as unknown as ParamsType;
 
-  const handleAddList = async () => {
-    if (listName.trim()) {
-      const userEmail = session?.user?.email;
-      if (userEmail) {
-        try {
-          await addTodo(listName, userEmail);
-          setListName('');
-          toast.success('List added successfully!');
-          setTimeout(() => {
-            router.push('/todos/todo');
-          }, 2000);
-        } catch (error) {
-          console.error('Failed to add list:', error);
-          toast.error('Failed to add list');
-        }
-      } else {
-        toast.error('User not found');
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user?.email) {
+      getTodos(session.user.email);
+    } else if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+    }
+  }, [status, session, getTodos, router]);
+
+  useEffect(() => {
+    if (todos.length > 0 && initialLoad) { 
+      const todo = todos.find((todo) => todo.id === id);
+      if (todo) {
+        setTodoName(todo.name);
+        setInitialLoad(false); 
       }
-    } else {
-      toast.error('Please enter the list name');
+    }
+  }, [todos, id, initialLoad]); 
+
+  const handleUpdateTodo = async () => {
+    if (session?.user?.email && todoName.trim()) {
+      try {
+        await updateTodo(id, todoName, session.user.email);
+        toast.success('List updated successfully!');
+        router.push('/todos/todo');
+      } catch (error) {
+        setLocalError('Failed to update todo');
+      }
     }
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTodoName(e.target.value);
+  };
+
+  if (status === 'loading') return <div>Loading...</div>;
 
   return (
     <div className="min-h-screen flex flex-col font-paragraph bg-customBlack dotted-background overflow-hidden">
@@ -42,12 +63,14 @@ const AddListPage: React.FC = () => {
       <div className="flex-grow flex items-center justify-center bg-center">
         <div className="p-6 w-2/4">
           <div className='flex items-center justify-center'>
+            {error && <p className="text-red-500">{error}</p>}
+            {localError && <p className="text-red-500">{localError}</p>}
             <input
               type="text"
-              value={listName}
-              onChange={(e) => setListName(e.target.value)}
-              placeholder="List name"
-              className="w-80 p-2 bg-customBackground text-customText border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-3"
+              value={todoName}
+              onChange={handleChange}
+              placeholder="[list]"
+              className="w-80 p-2 bg-customBackground text-customText border-4 border-customOrange rounded-xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-3"
             />
           </div>
 
@@ -89,17 +112,17 @@ const AddListPage: React.FC = () => {
 
           <div className="flex justify-center items-center h-full mt-4">
             <button
-              onClick={handleAddList}
+              onClick={handleUpdateTodo}
               className="px-6 py-2 mt-4 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl"
             >
-              Add List.
+              Edit List.
             </button>
           </div>
         </div>
       </div>
       <div className="flex justify-end mb-4">
         <p className="font-footerText text-customFooter text-7xl lg:text-8xl md:text-3xl sm:text-2xl">
-          add list<span className="text-customOrange text-8xl">.</span>
+          edit list<span className="text-customOrange text-8xl">.</span>
         </p>
       </div>
       <Toaster position="top-center" reverseOrder={false} />
@@ -107,4 +130,4 @@ const AddListPage: React.FC = () => {
   );
 };
 
-export default AddListPage;
+export default EditListPage;

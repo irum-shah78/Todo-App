@@ -28,25 +28,3 @@ model Todo {
   userId    String   @db.ObjectId
   user      User     @relation("UserTodos", fields: [userId], references: [id])
 }
-
-
-// model User {
-//   id               String    @id @default(auto()) @map("_id") @db.ObjectId
-//   email            String    @unique
-//   name             String?
-//   image            String?
-//   password         String?
-//   createdAt        DateTime  @default(now())
-//   updatedAt        DateTime  @updatedAt
-//   resetToken       String?
-//   resetTokenExpiry DateTime?
-// }
-
-// model Todo {
-//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-//   name      String
-//   themeName String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
