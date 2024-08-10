@@ -78,7 +78,7 @@ export default function ResetPassword() {
       </div>
       <div className='flex justify-end mb-4'>
         <p className='font-footerText text-customFooter text-6xl lg:text-5xl md:text-3xl sm:text-2xl'>
-          Change Password<span className='text-customOrange text-6xl'>.</span></p>
+          Reset Password<span className='text-customOrange text-6xl'>.</span></p>
       </div>
     </div>
   );

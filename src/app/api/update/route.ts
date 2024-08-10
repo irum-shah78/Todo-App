@@ -1,68 +1,77 @@
+// import { NextRequest, NextResponse } from 'next/server';
 // import prisma from '../../../libs/prismadb';
-// import { NextResponse } from 'next/server';
-// import { getServerSession } from 'next-auth/next';
+// import { getServerSession } from 'next-auth';
 // import { authOptions } from '../../../libs/AuthOptions';
 
-// export async function PUT(req: Request) {
+// export async function PUT(req: NextRequest) {
+//   const session = await getServerSession(authOptions);
+
+//   if (!session?.user?.id) {
+//     return NextResponse.json({ error: 'Unauthorized or Invalid session' }, { status: 401 });
+//   }
+
 //   try {
-//     const session = await getServerSession(authOptions);
+//     const { name, email, image, imagePath } = await req.json();
+//     const userId = session.user.id;
 
-//     if (!session) {
-//       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+//     console.log('Received data:', { userId, name, email, image, imagePath });
+
+//     if (!userId || !name || !email) {
+//       return NextResponse.json({ error: 'User ID, name, and email are required' }, { status: 400 });
 //     }
 
-//     const user = session.user;
+//     let imageBuffer: Buffer | undefined;
 
-//     if (!user || !user.email) {
-//       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+//     if (imagePath && imagePath.includes(',')) {
+//       try {
+//         imageBuffer = Buffer.from(imagePath.split(',')[1], 'base64');
+//       } catch (err) {
+//         console.error('Error decoding image:', err);
+//         return NextResponse.json({ error: 'Invalid image data' }, { status: 400 });
+//       }
+//     } else if (imagePath) {
+//       return NextResponse.json({ error: 'Invalid image path format' }, { status: 400 });
 //     }
-
-//     const { name, email, image } = await req.json();
 
 //     const updatedUser = await prisma.user.update({
-//       where: { email: String(user.email) },
-//       data: { name, email, image },
+//       where: { id: userId },
+//       data: {
+//         name,
+//         email,
+//         image: imageBuffer ? imageBuffer.toString('base64') : null,
+//       },
 //     });
 
-//     return NextResponse.json(updatedUser, { status: 200 });
+//     return NextResponse.json({ user: updatedUser });
 //   } catch (error) {
-//     console.error('Error updating user:', error);
-//     return NextResponse.json({ message: 'Failed to update user', error }, { status: 500 });
+//     console.error('Failed to update user:', error);
+//     return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
 //   }
 // }
 
 
+
+
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../libs/prismadb';
-import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../libs/AuthOptions';
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const { userId, name, email, image } = await req.json();
 
-    if (!session) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = session.user;
-
-    if (!user || !user.email) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { name, email, image } = await req.json();
-
-    // Update user in the database
     const updatedUser = await prisma.user.update({
-      where: { email: String(user.email) },
-      data: { name, email, image },
+      where: { id: userId },
+      data: {
+        name,
+        email,
+        image: image ? image.toString('base64') : null,
+      },
     });
 
-    // Optionally return the updated user data
-    return NextResponse.json(updatedUser, { status: 200 });
+    return NextResponse.json({ user: updatedUser });
   } catch (error) {
-    console.error('Error updating user:', error);
-    return NextResponse.json({ message: 'Failed to update user', error }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update user.' }, { status: 500 });
   }
 }
