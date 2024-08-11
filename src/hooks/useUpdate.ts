@@ -68,7 +68,7 @@ export const useUpdateUser = () => {
       const reader = new FileReader();
       reader.readAsDataURL(data.image);
       reader.onloadend = async () => {
-        const base64Image = reader.result?.toString().split(',')[1]; // Extract Base64 part
+        const base64Image = reader.result?.toString().split(',')[1]; 
         formData.append('image', base64Image || '');
 
         try {

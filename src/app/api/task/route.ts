@@ -1,4 +1,4 @@
-import prisma from '../../../../libs/prismadb';
+import prisma from '../../../libs/prismadb';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
@@ -74,13 +74,22 @@ export async function DELETE(req: Request) {
     const id = url.searchParams.get('id');
 
     if (!id) {
-      return NextResponse.json({ error: 'Task ID query parameter is required' }, { status: 400 });
+      return NextResponse.json({ error: 'ID query parameter is required' }, { status: 400 });
     }
 
-    const deletedTask = await prisma.task.delete({
+    const task = await prisma.task.findUnique({
       where: { id: String(id) },
     });
-    return NextResponse.json(deletedTask, { status: 200 });
+
+    if (!task) {
+      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+    }
+
+    await prisma.task.delete({
+      where: { id: String(id) },
+    });
+
+    return NextResponse.json({ message: 'Task deleted successfully' }, { status: 200 });
   } catch (error) {
     console.error('Error deleting task:', error);
     return NextResponse.json({ error: 'Error deleting task' }, { status: 500 });

@@ -1,6 +1,5 @@
-// src/hooks/useTasks.ts
 import { useState } from 'react';
-import axioosTaskInstance from '../libs/axiosTasks';
+import axios from 'axios';
 
 interface Task {
   id: string;
@@ -15,9 +14,8 @@ const useTasks = () => {
 
   const getTasks = async (todoId: string) => {
     try {
-      const response = await axioosTaskInstance.get('/', {
-        params: { todoId },
-      });
+      const response = await axios.get(`/api/task?todoId=${todoId}`);
+      console.log("Fetched tasks:", response.data);
       setTasks(response.data);
     } catch (err) {
       setError('Error fetching tasks');
@@ -25,9 +23,10 @@ const useTasks = () => {
     }
   };
 
+
   const addTask = async (name: string, todoId: string) => {
     try {
-      const response = await axioosTaskInstance.post('/', { name, todoId });
+      const response = await axios.post('/api/task', { name, todoId });
       setTasks((prevTasks) => [...prevTasks, response.data]);
     } catch (err) {
       setError('Error adding task');
@@ -37,7 +36,7 @@ const useTasks = () => {
 
   const updateTask = async (id: string, name: string, completed: boolean) => {
     try {
-      const response = await axioosTaskInstance.put('/', { id, name, completed });
+      const response = await axios.put('/api/task', { id, name, completed });
       setTasks((prevTasks) =>
         prevTasks.map((task) => (task.id === id ? { ...task, name: response.data.name, completed: response.data.completed } : task))
       );
@@ -49,7 +48,7 @@ const useTasks = () => {
 
   const deleteTask = async (id: string) => {
     try {
-      const response = await axioosTaskInstance.delete(`/${id}`);
+      const response = await axios.delete(`/api/task?id=${id}`);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
       return response.data;
     } catch (err) {
@@ -57,6 +56,7 @@ const useTasks = () => {
       console.error(err);
     }
   };
+
 
   return {
     tasks,

@@ -1,22 +1,20 @@
-// import { NextRequest, NextResponse } from 'next/server';
+// import { NextApiRequest, NextApiResponse } from 'next';
 // import formidable from 'formidable';
 // import fs from 'fs';
 // import path from 'path';
-// import { getServerSession } from 'next-auth';
-// import { authOptions } from '../../../libs/AuthOptions';
 
-// // Ensure that the API route does not use built-in body parser
 // export const config = {
 //   api: {
-//     bodyParser: false,
+//     bodyParser: false, // Disabling the default body parser
 //   },
 // };
 
-// const parseForm = (req: NextRequest) => {
-//   return new Promise<{ fields: any; files: any }>((resolve, reject) => {
-//     const form = new formidable.IncomingForm({ multiples: false });
+// // Function to parse form data
+// const parseForm = (req: NextApiRequest) => {
+//   const form = formidable({ multiples: false });
 
-//     form.parse(req as any, (err, fields, files) => {
+//   return new Promise<{ fields: any; files: any }>((resolve, reject) => {
+//     form.parse(req, (err, fields, files) => {
 //       if (err) {
 //         reject(err);
 //       } else {
@@ -26,78 +24,244 @@
 //   });
 // };
 
-// export async function POST(req: NextRequest) {
-//   try {
-//     const { files } = await parseForm(req);
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+//   if (req.method === 'POST') {
+//     try {
+//       const { files } = await parseForm(req);
 
-//     if (files.image) {
-//       const image = Array.isArray(files.image) ? files.image[0] : files.image;
-//       const imagePath = `/uploads/${path.basename(image.filepath)}`;
+//       if (files.image) {
+//         const image = Array.isArray(files.image) ? files.image[0] : files.image;
+//         const uploadDir = path.join(process.cwd(), 'public/uploads');
 
-//       // Save image to a directory
-//       fs.copyFileSync(image.filepath, path.join(process.cwd(), 'public', 'uploads', path.basename(image.filepath)));
+//         if (!fs.existsSync(uploadDir)) {
+//           fs.mkdirSync(uploadDir, { recursive: true });
+//         }
 
-//       return NextResponse.json({ imagePath });
-//     } else {
-//       return NextResponse.json({ error: 'Image not found' }, { status: 400 });
+//         const imagePath = `/uploads/${Date.now()}_${image.originalFilename}`;
+//         const fullPath = path.join(uploadDir, path.basename(imagePath));
+
+//         fs.copyFileSync(image.filepath, fullPath);
+
+//         res.status(200).json({ imagePath });
+//       } else {
+//         res.status(400).json({ error: 'Image not found' });
+//       }
+//     } catch (error) {
+//       console.error('Failed to upload image:', error);
+//       res.status(500).json({ error: 'Failed to upload image' });
 //     }
-//   } catch (error) {
-//     console.error('Failed to upload image:', error);
-//     return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
+//   } else {
+//     res.setHeader('Allow', ['POST']);
+//     res.status(405).end(`Method ${req.method} Not Allowed`);
 //   }
 // }
 
 
-import { NextRequest, NextResponse } from 'next/server';
-import formidable from 'formidable';
+// import { NextApiRequest, NextApiResponse } from 'next';
+// import multiparty from 'multiparty';
+// import fs from 'fs';
+// import path from 'path';
+
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disable default body parser
+//   },
+// };
+
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+//   if (req.method !== 'POST') {
+//     return res.status(405).json({ error: 'Method not allowed' });
+//   }
+
+//   try {
+//     const form = new multiparty.Form();
+
+//     form.parse(req, (err: Error | null, fields: multiparty.Fields, files: multiparty.Files) => {
+//       if (err) {
+//         console.error('Error parsing form:', err);
+//         return res.status(500).json({ error: 'Failed to parse form data' });
+//       }
+
+//       if (files.image) {
+//         const image = Array.isArray(files.image) ? files.image[0] : files.image;
+//         const uploadDir = path.join(process.cwd(), 'public/uploads');
+
+//         if (!fs.existsSync(uploadDir)) {
+//           fs.mkdirSync(uploadDir, { recursive: true });
+//         }
+
+//         const imagePath = `/uploads/${Date.now()}_${image.originalFilename}`;
+//         const fullPath = path.join(uploadDir, path.basename(imagePath));
+
+//         fs.copyFileSync(image.path, fullPath);
+
+//         return res.status(200).json({ imagePath });
+//       } else {
+//         return res.status(400).json({ error: 'Image not found' });
+//       }
+//     });
+//   } catch (error: any) {
+//     console.error('Unexpected error:', error);
+//     return res.status(500).json({ error: 'Internal server error' });
+//   }
+// }
+
+// export function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
+//   res.setHeader('Allow', ['POST']);
+//   res.status(200).end();
+// }
+
+
+// import { NextApiRequest, NextApiResponse } from 'next';
+// import multiparty from 'multiparty';
+// import fs from 'fs';
+// import path from 'path';
+
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disable default body parser
+//   },
+// };
+
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+//   if (req.method !== 'POST') {
+//     return res.status(405).json({ error: 'Method not allowed' });
+//   }
+
+//   try {
+//     const form = new multiparty.Form();
+
+//     form.parse(req, (err: Error | null, fields: multiparty.Fields, files: multiparty.Files) => {
+//       if (err) {
+//         console.error('Error parsing form:', err);
+//         return res.status(500).json({ error: 'Failed to parse form data' });
+//       }
+
+//       if (files.image) {
+//         const image = Array.isArray(files.image) ? files.image[0] : files.image;
+//         const uploadDir = path.join(process.cwd(), 'public/uploads');
+
+//         if (!fs.existsSync(uploadDir)) {
+//           fs.mkdirSync(uploadDir, { recursive: true });
+//         }
+
+//         const imagePath = `/uploads/${Date.now()}_${image.originalFilename}`;
+//         const fullPath = path.join(uploadDir, path.basename(imagePath));
+
+//         fs.copyFileSync(image.path, fullPath);
+
+//         return res.status(200).json({ imagePath });
+//       } else {
+//         return res.status(400).json({ error: 'Image not found' });
+//       }
+//     });
+//   } catch (error: any) {
+//     console.error('Unexpected error:', error);
+//     return res.status(500).json({ error: 'Internal server error' });
+//   }
+// }
+
+// export function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
+//   res.setHeader('Allow', ['POST']);
+//   res.status(200).end();
+// }
+
+
+// import { NextApiRequest, NextApiResponse } from 'next';
+// import multiparty from 'multiparty';
+// import fs from 'fs';
+// import path from 'path';
+
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disable default body parser
+//   },
+// };
+
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+//   if (req.method !== 'POST') {
+//     return res.status(405).json({ error: 'Method not allowed' });
+//   }
+
+//   const form = new multiparty.Form();
+
+//   form.parse(req, (err: Error | null, fields: multiparty.Fields, files: multiparty.Files) => {
+//     if (err) {
+//       console.error('Error parsing form:', err);
+//       return res.status(500).json({ error: 'Failed to parse form data' });
+//     }
+
+//     if (files.image) {
+//       const image = Array.isArray(files.image) ? files.image[0] : files.image;
+//       const uploadDir = path.join(process.cwd(), 'public/uploads');
+
+//       if (!fs.existsSync(uploadDir)) {
+//         fs.mkdirSync(uploadDir, { recursive: true });
+//       }
+
+//       const imagePath = `/uploads/${Date.now()}_${image.originalFilename}`;
+//       const fullPath = path.join(uploadDir, path.basename(imagePath));
+
+//       fs.copyFileSync(image.path, fullPath);
+
+//       console.log('Image path:', imagePath); // Log image path
+//       return res.status(200).json({ imagePath });
+//     } else {
+//       return res.status(400).json({ error: 'Image not found' });
+//     }
+//   });
+// }
+
+// export function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
+//   res.setHeader('Allow', ['POST']);
+//   res.status(200).end();
+// }
+
+
+import { NextApiRequest, NextApiResponse } from 'next';
+import multiparty from 'multiparty';
 import fs from 'fs';
 import path from 'path';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../libs/AuthOptions';
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: false, // Disable default body parser
   },
 };
 
-const parseForm = (req: NextRequest) => {
-  return new Promise<{ fields: any; files: any }>((resolve, reject) => {
-    const form = new formidable.IncomingForm({ multiples: false });
+// Handle POST requests for image uploads
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
+  const form = new multiparty.Form();
 
-    form.parse(req as any, (err, fields, files) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({ fields, files });
-      }
-    });
-  });
-};
-
-export async function POST(req: NextRequest) {
-  try {
-    const { files } = await parseForm(req);
+  form.parse(req, (err: Error | null, fields: multiparty.Fields, files: multiparty.Files) => {
+    if (err) {
+      console.error('Error parsing form:', err);
+      return res.status(500).json({ error: 'Failed to parse form data' });
+    }
 
     if (files.image) {
       const image = Array.isArray(files.image) ? files.image[0] : files.image;
-      const imagePath = `/uploads/${path.basename(image.filepath)}`;
+      const uploadDir = path.join(process.cwd(), 'public/uploads');
 
-      // Ensure uploads directory exists
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
 
-      // Save image to the uploads directory
-      fs.copyFileSync(image.filepath, path.join(uploadDir, path.basename(image.filepath)));
+      const imagePath = `/uploads/${Date.now()}_${image.originalFilename}`;
+      const fullPath = path.join(uploadDir, path.basename(imagePath));
 
-      return NextResponse.json({ imagePath });
+      fs.copyFileSync(image.path, fullPath);
+
+      console.log('Image path:', imagePath); // Log image path
+      return res.status(200).json({ imagePath });
     } else {
-      return NextResponse.json({ error: 'Image not found' }, { status: 400 });
+      return res.status(400).json({ error: 'Image not found' });
     }
-  } catch (error) {
-    console.error('Failed to upload image:', error);
-    return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
-  }
+  });
+}
+
+// Handle OPTIONS requests for CORS preflight checks
+export async function OPTIONS(req: NextApiRequest, res: NextApiResponse) {
+  res.setHeader('Allow', ['POST']);
+  res.status(200).end();
 }
