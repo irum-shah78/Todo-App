@@ -27,10 +27,18 @@
 //   updatedAt DateTime @updatedAt
 //   userId    String   @db.ObjectId
 //   user      User     @relation("UserTodos", fields: [userId], references: [id])
+//   tasks     Task[]   @relation("TodoTasks")
 // }
 
-
-
+// model Task {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   name      String
+//   completed Boolean  @default(false)
+//   todoId    String   @db.ObjectId
+//   todo      Todo     @relation("TodoTasks", fields: [todoId], references: [id])
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 datasource db {
   provider = "mongodb"
@@ -62,6 +70,7 @@ model Todo {
   userId    String   @db.ObjectId
   user      User     @relation("UserTodos", fields: [userId], references: [id])
   tasks     Task[]   @relation("TodoTasks")
+  theme     String   @default("Vintage Garden")
 }
 
 model Task {

@@ -1,4 +1,4 @@
-// const themes = {
+//  const themeColors = {
 //   "Vintage Garden": {
 //     primary: "#2D4659",
 //     background: "#FDFBDA",
@@ -46,11 +46,12 @@
 //   },
 // };
 
-// export default themes;
+// export default themeColors;
 
+import {ThemeName} from "../types/type"
 
-const themes = {
-  "Vintage Garden": {
+const themeColors: Record<ThemeName, { primary: string; background: string; accent: string }> = {
+    "Vintage Garden": {
     primary: "#2D4659",
     background: "#FDFBDA",
     accent: "#819F7F",
@@ -95,7 +96,6 @@ const themes = {
     background: "#2C3333",
     accent: "#2E4F4F",
   },
-} as const;
+};
 
-export type ThemeName = keyof typeof themes;
-export default themes;
+export default themeColors;

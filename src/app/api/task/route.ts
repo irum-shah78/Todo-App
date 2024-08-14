@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const { id, name } = await req.json();
+    const { id, name, completed } = await req.json();
 
     const task = await prisma.task.findUnique({
       where: { id: String(id) },
@@ -59,7 +59,7 @@ export async function PUT(req: Request) {
 
     const updatedTask = await prisma.task.update({
       where: { id: String(id) },
-      data: { name },
+      data: { name, completed },
     });
     return NextResponse.json(updatedTask, { status: 200 });
   } catch (error) {
@@ -67,6 +67,7 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: 'Error updating task' }, { status: 500 });
   }
 }
+
 
 export async function DELETE(req: Request) {
   try {

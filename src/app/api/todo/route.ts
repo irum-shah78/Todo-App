@@ -28,9 +28,61 @@ export async function GET(req: Request) {
   }
 }
 
+// export async function POST(req: Request) {
+//   try {
+//     const { name, email } = await req.json();
+
+//     const user = await prisma.user.findUnique({
+//       where: { email: String(email) },
+//     });
+
+//     if (!user) {
+//       return NextResponse.json({ error: 'User not found' }, { status: 404 });
+//     }
+
+//     const newTodo = await prisma.todo.create({
+//       data: {
+//         name,
+//         userId: user.id,
+//       },
+//     });
+//     return NextResponse.json(newTodo, { status: 200 });
+//   } catch (error) {
+//     console.error('Error adding todo:', error);
+//     return NextResponse.json({ error: 'Error adding todo' }, { status: 500 });
+//   }
+// }
+
+// export async function POST(req: Request) {
+//   try {
+//     const { name, email, theme } = await req.json();
+
+//     const user = await prisma.user.findUnique({
+//       where: { email: String(email) },
+//     });
+
+//     if (!user) {
+//       return NextResponse.json({ error: 'User not found' }, { status: 404 });
+//     }
+
+//     const newTodo = await prisma.todo.create({
+//       data: {
+//         name,
+//         userId: user.id,
+//         theme: theme || 'Vintage Garden', // Default theme if not provided
+//       },
+//     });
+//     return NextResponse.json(newTodo, { status: 200 });
+//   } catch (error) {
+//     console.error('Error adding todo:', error);
+//     return NextResponse.json({ error: 'Error adding todo' }, { status: 500 });
+//   }
+// }
+
+
 export async function POST(req: Request) {
   try {
-    const { name, email } = await req.json();
+    const { name, email, theme } = await req.json();
 
     const user = await prisma.user.findUnique({
       where: { email: String(email) },
@@ -44,6 +96,7 @@ export async function POST(req: Request) {
       data: {
         name,
         userId: user.id,
+        theme: theme || 'DefaultColor', // Use the passed color or a default one
       },
     });
     return NextResponse.json(newTodo, { status: 200 });
@@ -53,9 +106,35 @@ export async function POST(req: Request) {
   }
 }
 
+
+
+
+// export async function PUT(req: Request) {
+//   try {
+//     const { id, name, email } = await req.json();
+
+//     const user = await prisma.user.findUnique({
+//       where: { email: String(email) },
+//     });
+
+//     if (!user) {
+//       return NextResponse.json({ error: 'User not found' }, { status: 404 });
+//     }
+
+//     const updatedTodo = await prisma.todo.update({
+//       where: { id: String(id) },
+//       data: { name },
+//     });
+//     return NextResponse.json(updatedTodo, { status: 200 });
+//   } catch (error) {
+//     console.error('Error updating todo:', error);
+//     return NextResponse.json({ error: 'Error updating todo' }, { status: 500 });
+//   }
+// }
+
 export async function PUT(req: Request) {
   try {
-    const { id, name, email } = await req.json();
+    const { id, name, email, theme } = await req.json();
 
     const user = await prisma.user.findUnique({
       where: { email: String(email) },
@@ -67,7 +146,7 @@ export async function PUT(req: Request) {
 
     const updatedTodo = await prisma.todo.update({
       where: { id: String(id) },
-      data: { name },
+      data: { name, theme },
     });
     return NextResponse.json(updatedTodo, { status: 200 });
   } catch (error) {

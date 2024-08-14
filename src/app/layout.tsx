@@ -65,7 +65,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NextAuthSessionProvider from "../../providers/NextAuthSessionProvider";
 import ToastProvider from "../../providers/ToastProvider";
-import { ThemeProvider } from '@/libs/ThemeContext'; // Adjust the import path
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -85,9 +84,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextAuthSessionProvider>
           <ToastProvider />
-          <ThemeProvider> {/* Ensure ThemeProvider is included */}
             {children}
-          </ThemeProvider>
         </NextAuthSessionProvider>
       </body>
     </html>
