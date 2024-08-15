@@ -1,9 +1,8 @@
-// src/types/types.ts
 export type Todo = {
   id: string;
   name: string;
   title: string;
-  theme?: string;  // `theme` should be optional or mandatory based on your use case
+  theme?: string;  
   createdAt: string;
   updatedAt: string;
   userId: string;

@@ -1,10 +1,11 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import useTasks from '../../../../hooks/useTasks';
-import Header from '@/components/appheader/Header';
+import Header from '@/components/taskheader/Header';
+import themeColors from '@/constants/ThemeColors';
+import { ThemeName } from '@/types/type';
 import toast, { Toaster } from 'react-hot-toast';
 
 type Task = {
@@ -20,10 +21,12 @@ const TasksPage: React.FC = () => {
   const { id: todoId } = params;
   const searchParams = useSearchParams();
   const todoName = searchParams?.get('name') || '';
+  const themeName = searchParams?.get('theme') as ThemeName || 'Vintage Garden'; 
   const { data: session, status } = useSession();
   const [taskName, setTaskName] = useState('');
-
   const { tasks, error, getTasks, addTask, updateTask, deleteTask } = useTasks();
+
+  const currentTheme = themeColors[themeName] || themeColors["Vintage Garden"]; 
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.email) {
@@ -33,7 +36,7 @@ const TasksPage: React.FC = () => {
     }
   }, [status, session, getTasks, router, todoId]);
 
-  const handleToggleComplete = async (taskId: string, completed: boolean) => {
+  const handleToggleComplete = async (taskId: string) => {
     const taskToUpdate = tasks.find((task: Task) => task.id === taskId);
 
     if (taskToUpdate) {
@@ -82,56 +85,82 @@ const TasksPage: React.FC = () => {
   if (status === 'loading') return <div>Loading...</div>;
 
   return (
-    <div className="min-h-screen flex flex-col font-paragraph bg-customBlack dotted-background overflow-hidden">
-      <Header />
+    <div style={{ backgroundColor: currentTheme.background, color: currentTheme.primary }} className="min-h-screen flex flex-col font-paragraph dotted-background overflow-hidden">
+      <Header theme={currentTheme} />
       <div className="flex-grow flex flex-col items-center justify-center bg-center p-6">
-        <h1 className="text-8xl text-customText font-footerText">
-          {todoName}<span className="text-customOrange">.</span>
+        <h1 className="text-8xl font-footerText" style={{ color: currentTheme.primary }}>
+          {todoName}<span style={{ color: currentTheme.primary }}>.</span>
         </h1>
         <div className="mt-8 w-full max-w-md">
           <div className="mb-4 flex items-center gap-3">
-            <input type="text"
+            <input
+              type="text"
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
               placeholder="[task]"
-              className="w-2/3 p-2 bg-customBackground text-customText border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-4"
+              style={{
+                backgroundColor: currentTheme.background,
+                color: currentTheme.primary,
+                borderColor: currentTheme.accent,
+              }}
+              className="w-2/3 p-2 border-4 rounded-3xl focus:outline-none focus:ring-1 placeholder-text-xl placeholder:ps-4"
             />
             <button
               onClick={handleAddTask}
-              className="px-2 py-1 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl"
+              style={{
+                backgroundColor: currentTheme.accent,
+                color: currentTheme.background,
+                borderColor: currentTheme.accent,
+              }}
+              className={`px-2 py-2 font-semibold rounded-3xl focus:outline-none focus:ring-1 text-xl`}
             >
               Add Task
             </button>
           </div>
+
           {Array.isArray(tasks) && tasks.length > 0 ? (
             tasks.map((task: Task) => (
-              <div key={task.id} className="flex justify-between items-center py-2">
-                <div className="flex items-center gap-2">
-                  <input type="checkbox" checked={task.completed} onChange={() => handleToggleComplete(task.id, task.completed)}
-                    className="appearance-none h-6 w-6 bg-customBackground border-2 border-customOrange rounded checked:bg-customBackground checked:border-customOrange checked:ring-2 checked:ring-customOrange checked:focus:ring-customOrange checked:focus:bg-customBackground focus:outline-none focus:ring-1 focus:ring-customOrange checked:after:bg-transparent checked:after:text-white after:content-['✔'] after:h-5 after:w-5 after:flex after:items-center after:justify-center after:absolute" />
+              <div key={task.id} className="flex justify-between items-center">
+                <div className="flex items-center gap-2 relative">
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      checked={task.completed}
+                      onChange={() => handleToggleComplete(task.id)}
+                      className={`appearance-none h-6 w-6 mt-2 p-b-1 bg-[${currentTheme.background}] border-2 border-[${currentTheme.accent}] rounded focus:outline-none focus:ring-1 focus:ring-[${currentTheme.accent}] cursor-pointer`}
+                    />
+                    {task.completed && (
+                      <span
+                        className={`absolute inset-0 flex items-center justify-center text-[${currentTheme.accent}] `}
+                      >
+                        ✔
+                      </span>
+                    )}
+                  </div>
                   <span
-                    className={`text-2xl text-customText cursor-pointer`}
-                    onClick={() => handleToggleComplete(task.id, task.completed)}
+                    className={`ml-2 text-2xl font-bold cursor-pointer underline ${task.completed ? `text-[${currentTheme.accent}] underline` : 'text-primary'}`}
+                    style={{ color: currentTheme.primary }}
+                    onClick={() => handleToggleComplete(task.id)}
                   >
                     {task.name}
                   </span>
                 </div>
                 <button
                   onClick={() => handleDeleteTask(task.id)}
-                  className="px-2 py-1 bg-red-600 text-white rounded-3xl"
+                  className="px-2 py-1 mt-4 bg-red-600 text-white font-semibold border-4 border-red-600 rounded-3xl focus:outline-none focus:ring-1 focus:ring-red-500 text-xl"
                 >
                   Delete
                 </button>
               </div>
             ))
           ) : (
-            <p className="text-customText text-lg">{error ? error : 'No tasks available'}</p>
+            <p className="text-lg">{error ? error : 'No tasks available'}</p>
           )}
         </div>
       </div>
       <div className="flex justify-end mb-4">
-        <p className="font-footerText text-customFooter text-7xl lg:text-8xl md:text-3xl sm:text-2xl">
-          tasks<span className="text-customOrange text-8xl">.</span>
+        <p className="font-footerText text-7xl lg:text-8xl md:text-3xl sm:text-2xl">
+          tasks<span className="text-8xl" style={{ color: currentTheme.primary }}>.</span>
         </p>
       </div>
       <Toaster position="top-center" reverseOrder={false} />

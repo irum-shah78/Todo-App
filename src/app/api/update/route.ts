@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest) {
       data: {
         name,
         email,
-        image: imageBuffer ? imageBuffer.toString('base64') : null,
+        image: imagePath || null,
       },
     });
 

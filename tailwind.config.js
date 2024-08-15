@@ -1,28 +1,3 @@
-// /** @type {import('tailwindcss').Config} */
-// module.exports = {
-//   content: [
-//     "./src/**/*.{js,ts,jsx,tsx}",
-//   ],
-//   theme: {
-//     extend: {
-//       colors: {
-//         customBlack: 'rgba(35, 32, 32, 1)',
-//         navBlack: 'rgba(35, 32, 32, 0.3)',
-//         customText: 'rgba(244, 244, 244, 1)',
-//         customOrange: 'rgba(255, 115, 21, 1)',
-//         customBackground: 'rgba(35, 32, 32, 1)',
-//         customFooter: 'rgba(244, 244, 244, 0.42)',
-//         customBlue: 'rgba(0, 43, 91, 1)',
-//       },
-//       fontFamily: {
-//         footerText: ['Stint Ultra Condensed', 'cursive', 'serif'],
-//         paragraph: ['IBM Plex Mono', 'monospace'],
-//       },
-//     },
-//   },
-//   plugins: [],
-// };
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -40,7 +15,6 @@ module.exports = {
         customBlue: 'rgba(0, 43, 91, 1)',
         underlineColor: '#f4e96d',
 
-        // Adding theme colors
         'vintage-garden-primary': '#2D4659',
         'vintage-garden-background': '#FDFBDA',
         'vintage-garden-accent': '#819F7F',
@@ -82,7 +56,7 @@ module.exports = {
         paragraph: ['IBM Plex Mono', 'monospace'],
       },
       spacing: {
-        'underline-height': '0.3em', // Custom height for the underline
+        'underline-height': '0.3em', 
       },
     },
   },

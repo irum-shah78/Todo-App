@@ -1,20 +1,3 @@
-// "use client";
-
-// import { signOut } from "next-auth/react"
-
-// export default function LogoutButton(){
-//   return (
-//     <div className="text-center bg-black text-white"
-//     onClick={()=>{
-//       signOut();
-//     }} 
-    
-//     >Logout</div>
-//   )
-// }
-
-
-// components/logout/LogoutButton.tsx
 "use client";
 
 import { signOut } from "next-auth/react";

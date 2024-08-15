@@ -9,6 +9,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     if (!id) {
       return NextResponse.json({ error: 'ID parameter is required' }, { status: 400 });
     }
+    await prisma.task.deleteMany({
+      where: { todoId: id },
+    });
 
     await prisma.todo.delete({
       where: { id: String(id) },
