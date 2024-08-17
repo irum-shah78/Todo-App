@@ -14,7 +14,7 @@ export const POST = async (req: any) => {
 
   const resetToken = crypto.randomBytes(20).toString('hex');
   const passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
-  const passwordResetExpires = new Date(Date.now() + 3600000); // 1 hour expiry
+  const passwordResetExpires = new Date(Date.now() + 3600000);
 
   await prisma.user.update({
     where: { email },

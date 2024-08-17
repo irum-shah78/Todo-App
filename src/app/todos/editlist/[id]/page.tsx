@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import Header from '@/components/appheader/Header';
+import Header from '@/components/header/Header';
 import useTodo from '../../../../hooks/useTodos';
 import toast, { Toaster } from 'react-hot-toast';
+import Loader from '@/components/loader/Loader';
 
 interface ParamsType {
   id: string;
@@ -61,7 +62,7 @@ const EditListPage: React.FC = () => {
     setSelectedTheme(theme);
   };
 
-  if (status === 'loading') return <div>Loading...</div>;
+  if (status === 'loading') return <div><Loader /></div>;
 
   return (
     <div className="min-h-screen flex flex-col font-paragraph bg-customBlack dotted-background overflow-hidden">
@@ -106,8 +107,8 @@ const EditListPage: React.FC = () => {
             <button className={`bg-vibrant-spectrum-background text-vibrant-spectrum-primary text-lg border-4 border-vibrant-spectrum-accent rounded-3xl px-4 py-1  ${selectedTheme === 'Vibrant Spectrum' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Vibrant Spectrum')}>
               Vibrant Spectrum
             </button>
-            <button className={`bg-coastal-sunrise-background text-coastal-sunrise-accent text-lg border-4 border-coastal-sunrise-primary rounded-3xl px-4 py-1 ${selectedTheme === 'Costal Sunrise' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Costal Sunrise')}>
-              Costal Sunrise
+            <button className={`bg-coastal-sunrise-background text-coastal-sunrise-accent text-lg border-4 border-coastal-sunrise-primary rounded-3xl px-4 py-1 ${selectedTheme === 'Coastal Sunrise' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Coastal Sunrise')}>
+            Coastal Sunrise
             </button>
             <button className={`bg-oceanic-serenity-background text-oceanic-serenity-primary text-lg border-4 border-oceanic-serenity-accent rounded-3xl px-4 py-1 ${selectedTheme === 'Oceanic Serenity' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Oceanic Serenity')}>
               Oceanic Serenity

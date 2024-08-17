@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import useTasks from '../../../../hooks/useTasks';
-import Header from '@/components/taskheader/Header';
+import Header from '@/components/header/Header';
 import themeColors from '@/constants/ThemeColors';
 import { ThemeName } from '@/types/type';
 import toast, { Toaster } from 'react-hot-toast';
+import Loader from '@/components/loader/Loader';
 
 type Task = {
   id: string;
@@ -21,7 +22,7 @@ const TasksPage: React.FC = () => {
   const { id: todoId } = params;
   const searchParams = useSearchParams();
   const todoName = searchParams?.get('name') || '';
-  const themeName = searchParams?.get('theme') as ThemeName || 'Vintage Garden'; 
+  const themeName = searchParams?.get('theme') as ThemeName || ''; 
   const { data: session, status } = useSession();
   const [taskName, setTaskName] = useState('');
   const { tasks, error, getTasks, addTask, updateTask, deleteTask } = useTasks();
@@ -82,7 +83,7 @@ const TasksPage: React.FC = () => {
     }
   };
 
-  if (status === 'loading') return <div>Loading...</div>;
+  if (status === 'loading') return <div><Loader/></div>;
 
   return (
     <div style={{ backgroundColor: currentTheme.background, color: currentTheme.primary }} className="min-h-screen flex flex-col font-paragraph dotted-background overflow-hidden">

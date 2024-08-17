@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useTodo from '../../../hooks/useTodos';
 import { useSession } from 'next-auth/react';
-import Header from '@/components/appheader/Header';
+import Header from '@/components/header/Header';
 import toast, { Toaster } from 'react-hot-toast';
 import themeColors from '@/constants/ThemeColors';
 import { ThemeName } from '@/types/type';
+import Loader from '@/components/loader/Loader';
 
 
 const TodosPage: React.FC = () => {
@@ -25,14 +26,14 @@ const TodosPage: React.FC = () => {
 
   const [selectedColor, setSelectedColor] = useState<string>('');
 
-  const handleAddTodo = async (name: string) => {
-    const specificLine = "Your specific line of text here.";
-    const taskWithSpecificLine = `${name} - ${specificLine}`;
+  // const handleAddTodo = async (name: string) => {
+  //   const specificLine = "Your specific line of text here.";
+  //   const taskWithSpecificLine = `${name} - ${specificLine}`;
 
-    if (session?.user?.email && selectedColor) {
-      await addTodo(taskWithSpecificLine, session.user.email, selectedColor);
-    }
-  };
+  //   if (session?.user?.email && selectedColor) {
+  //     await addTodo(taskWithSpecificLine, session.user.email, selectedColor);
+  //   }
+  // };
 
   const handleViewTasks = (id: string, name: string, theme: string) => {
     router.push(`/todos/tasks/${id}?name=${encodeURIComponent(name)}&theme=${encodeURIComponent(theme)}`);
@@ -54,7 +55,7 @@ const TodosPage: React.FC = () => {
   };
 
 
-  if (status === 'loading') return <div>Loading...</div>;
+  if (status === 'loading') return <div><Loader /></div>;
 
   return (
     <div className="min-h-screen flex flex-col font-paragraph bg-customBlack dotted-background overflow-hidden">
@@ -63,7 +64,7 @@ const TodosPage: React.FC = () => {
         <h1 className="text-8xl text-customText font-footerText">
           Todo Lists<span className="text-customOrange">.</span>
         </h1>
-        <div className="mt-8 w-full max-w-md">
+        <div className="w-full max-w-md">
           {Array.isArray(todos) && todos.length > 0 ? (
             todos.map((todo) => (
               <div key={todo.id} className="flex justify-between items-center py-2">
