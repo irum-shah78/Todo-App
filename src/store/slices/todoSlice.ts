@@ -1,17 +1,6 @@
 import axiosInstance from '@/libs/axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-interface Todo {
-  id: string;
-  name: string;
-  theme: string;
-}
-
-interface TodoState {
-  todos: Todo[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
-}
+import { Todo, TodoState } from '@/types/type';
 
 const initialState: TodoState = {
   todos: [],

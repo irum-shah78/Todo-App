@@ -1,89 +1,13 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { useRouter, useParams, useSearchParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import useTasks from '../../../../hooks/useTasks';
+import React from 'react';
+import useTasksPage from './useTask';
 import Header from '@/components/header/Header';
-import themeColors from '@/constants/ThemeColors';
-import { ThemeName } from '@/types/type';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '@/components/loader/Loader';
 
-type Task = {
-  id: string;
-  name: string;
-  completed: boolean;
-  todoId: string;
-};
-
 const TasksPage: React.FC = () => {
-  const router = useRouter();
-  const params = useParams() as { id: string };
-  const { id: todoId } = params;
-  const searchParams = useSearchParams();
-  const todoName = searchParams?.get('name') || '';
-  const themeName = searchParams?.get('theme') as ThemeName || ''; 
-  const { data: session, status } = useSession();
-  const [taskName, setTaskName] = useState('');
-  const { tasks, error, getTasks, addTask, updateTask, deleteTask } = useTasks();
-
-  const currentTheme = themeColors[themeName] || themeColors["Vintage Garden"]; 
-
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user?.email) {
-      getTasks(todoId);
-    } else if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    }
-  }, [status, session, getTasks, router, todoId]);
-
-  const handleToggleComplete = async (taskId: string) => {
-    const taskToUpdate = tasks.find((task: Task) => task.id === taskId);
-
-    if (taskToUpdate) {
-      try {
-        const newCompletedStatus = !taskToUpdate.completed;
-        await updateTask(taskId, taskToUpdate.name, newCompletedStatus);
-        toast.success(newCompletedStatus ? 'Task marked as complete' : 'Task marked as incomplete');
-        getTasks(todoId);
-      } catch (error) {
-        console.error('Failed to update task:', error);
-        toast.error('Failed to update task');
-      }
-    } else {
-      console.error('Task not found:', taskId);
-      toast.error('Task not found');
-    }
-  };
-
-  const handleAddTask = async () => {
-    if (taskName.trim() && todoId) {
-      try {
-        await addTask(taskName, todoId);
-        setTaskName('');
-        toast.success('Task added successfully!');
-        getTasks(todoId);
-      } catch (error) {
-        console.error('Failed to add task:', error);
-        toast.error('Failed to add task');
-      }
-    } else {
-      toast.error('Please enter a task name');
-    }
-  };
-
-  const handleDeleteTask = async (taskId: string) => {
-    try {
-      await deleteTask(taskId);
-      toast.success('Task deleted successfully!');
-      getTasks(todoId);
-    } catch (error) {
-      console.error('Failed to delete task:', error);
-      toast.error('Failed to delete task');
-    }
-  };
-
-  if (status === 'loading') return <div><Loader/></div>;
+  const { taskName, setTaskName, todoName, currentTheme, tasks, error, status, handleToggleComplete, handleAddTask, handleDeleteTask, } = useTasksPage();
+  if (status === 'loading') return <div><Loader /></div>;
 
   return (
     <div style={{ backgroundColor: currentTheme.background, color: currentTheme.primary }} className="min-h-screen flex flex-col font-paragraph dotted-background overflow-hidden">
@@ -94,11 +18,7 @@ const TasksPage: React.FC = () => {
         </h1>
         <div className="mt-8 w-full max-w-md">
           <div className="mb-4 flex items-center gap-3">
-            <input
-              type="text"
-              value={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
-              placeholder="[task]"
+            <input type="text" value={taskName} onChange={(e) => setTaskName(e.target.value)} placeholder="[task]"
               style={{
                 backgroundColor: currentTheme.background,
                 color: currentTheme.primary,
@@ -106,8 +26,7 @@ const TasksPage: React.FC = () => {
               }}
               className="w-2/3 p-2 border-4 rounded-3xl focus:outline-none focus:ring-1 placeholder-text-xl placeholder:ps-4"
             />
-            <button
-              onClick={handleAddTask}
+            <button onClick={handleAddTask}
               style={{
                 backgroundColor: currentTheme.accent,
                 color: currentTheme.background,
@@ -120,29 +39,20 @@ const TasksPage: React.FC = () => {
           </div>
 
           {Array.isArray(tasks) && tasks.length > 0 ? (
-            tasks.map((task: Task) => (
+            tasks.map((task) => (
               <div key={task.id} className="flex justify-between items-center">
                 <div className="flex items-center gap-2 relative">
                   <div className="relative">
-                    <input
-                      type="checkbox"
-                      checked={task.completed}
-                      onChange={() => handleToggleComplete(task.id)}
+                    <input type="checkbox" checked={task.completed} onChange={() => handleToggleComplete(task.id)}
                       className={`appearance-none h-6 w-6 mt-2 p-b-1 bg-[${currentTheme.background}] border-2 border-[${currentTheme.accent}] rounded focus:outline-none focus:ring-1 focus:ring-[${currentTheme.accent}] cursor-pointer`}
                     />
                     {task.completed && (
-                      <span
-                        className={`absolute inset-0 flex items-center justify-center text-[${currentTheme.accent}] `}
-                      >
+                      <span className={`absolute inset-0 flex items-center justify-center text-[${currentTheme.accent}] `}>
                         ✔
                       </span>
                     )}
                   </div>
-                  <span
-                    className={`ml-2 text-2xl font-bold cursor-pointer underline ${task.completed ? `text-[${currentTheme.accent}] underline` : 'text-primary'}`}
-                    style={{ color: currentTheme.primary }}
-                    onClick={() => handleToggleComplete(task.id)}
-                  >
+                  <span className={`ml-2 text-2xl font-bold cursor-pointer underline ${task.completed ? `text-[${currentTheme.accent}] underline` : 'text-primary'}`} style={{ color: currentTheme.primary }} onClick={() => handleToggleComplete(task.id)} >
                     {task.name}
                   </span>
                 </div>

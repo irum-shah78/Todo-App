@@ -16,7 +16,7 @@ const useAddList = () => {
       const userEmail = session?.user?.email;
       if (userEmail) {
         try {
-          await addTodo(listName, userEmail, selectedTheme); 
+          await addTodo(listName, userEmail, selectedTheme);
           setListName('');
           toast.success('List added successfully!');
           setTimeout(() => {
@@ -36,10 +36,10 @@ const useAddList = () => {
 
   return {
     listName,
-    setListName,
     selectedTheme,
+    setListName,
     setSelectedTheme,
-    handleAddList
+    handleAddList,
   };
 };
 

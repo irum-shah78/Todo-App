@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface UserProfile {
-  name: string;
-  email: string;
-  image: string;
-}
+import { UserProfile } from '@/types/type';
 
 const initialState = {
   user: null as UserProfile | null,

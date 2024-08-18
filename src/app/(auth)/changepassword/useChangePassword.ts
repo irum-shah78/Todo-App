@@ -3,8 +3,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const useChangePassword = () => {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -12,18 +12,20 @@ const useChangePassword = () => {
       toast.error("Email is required!");
       return;
     }
+
     setLoading(true);
+
     try {
       const response = await axios.post('/api/changepassword', { email });
-      toast.success(response.data.message);
+      toast.success(response?.data?.message || "Password change request successful!");
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        toast.error("Email not found. Please check and try again.");
-      } else {
-        toast.error(error?.response?.data?.message || "Something went wrong!");
-      }
+      const errorMessage = error?.response?.status === 400
+        ? "Email not found. Please check and try again."
+        : error?.response?.data?.message || "Something went wrong!";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return {

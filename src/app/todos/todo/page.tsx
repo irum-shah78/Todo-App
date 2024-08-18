@@ -1,59 +1,14 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import useTodo from '../../../hooks/useTodos';
-import { useSession } from 'next-auth/react';
+import useTodosPage from './useTodo';
 import Header from '@/components/header/Header';
 import toast, { Toaster } from 'react-hot-toast';
-import themeColors from '@/constants/ThemeColors';
-import { ThemeName } from '@/types/type';
 import Loader from '@/components/loader/Loader';
 
-
 const TodosPage: React.FC = () => {
-  const { todos, error, getTodos, addTodo, deleteTodo } = useTodo();
   const router = useRouter();
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user?.email) {
-      getTodos(session.user.email);
-    } else if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    }
-  }, [status, session, getTodos, router]);
-
-  const [selectedColor, setSelectedColor] = useState<string>('');
-
-  // const handleAddTodo = async (name: string) => {
-  //   const specificLine = "Your specific line of text here.";
-  //   const taskWithSpecificLine = `${name} - ${specificLine}`;
-
-  //   if (session?.user?.email && selectedColor) {
-  //     await addTodo(taskWithSpecificLine, session.user.email, selectedColor);
-  //   }
-  // };
-
-  const handleViewTasks = (id: string, name: string, theme: string) => {
-    router.push(`/todos/tasks/${id}?name=${encodeURIComponent(name)}&theme=${encodeURIComponent(theme)}`);
-  };
-
-
-  const handleDeleteTodo = async (id: string) => {
-    try {
-      await deleteTodo(id);
-      toast.success('List deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting todo:', error);
-    }
-  };
-
-  const getUnderlineColor = (theme: string) => {
-    const validTheme = theme as ThemeName;
-    return themeColors[validTheme]?.primary || '#FFFFFF';
-  };
-
+  const {todos,error,status,selectedColor,setSelectedColor,handleViewTasks,handleDeleteTodo,getUnderlineColor,} = useTodosPage();
 
   if (status === 'loading') return <div><Loader /></div>;
 
@@ -68,29 +23,17 @@ const TodosPage: React.FC = () => {
           {Array.isArray(todos) && todos.length > 0 ? (
             todos.map((todo) => (
               <div key={todo.id} className="flex justify-between items-center py-2">
-                <span
-                  onClick={() => handleViewTasks(todo.id, todo.name, todo.theme)}
-                  className="relative text-white text-2xl font-bold cursor-pointer"
-                  style={{ '--underline-color': getUnderlineColor(todo.theme) } as React.CSSProperties} 
-                >
+                <span onClick={() => handleViewTasks(todo.id, todo.name, todo.theme)} className="relative text-white text-2xl font-bold cursor-pointer" style={{ '--underline-color': getUnderlineColor(todo.theme) } as React.CSSProperties} >
                   {todo.name}
-                  <span
-                    className="absolute left-0 bottom-0 w-full h-[0.2em]"
-                    style={{ backgroundColor: 'var(--underline-color)' }} 
-                  ></span>
+                  <span className="absolute left-0 bottom-0 w-full h-[0.2em]" style={{ backgroundColor: 'var(--underline-color)' }} >
+                  </span>
                 </span>
 
                 <div className="flex space-x-4">
-                  <button
-                    onClick={() => router.push(`/todos/editlist/${todo.id}`)}
-                    className="px-2 py-1 mt-4 bg-customOrange text-customText font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl"
-                  >
+                  <button onClick={() => router.push(`/todos/editlist/${todo.id}`)} className="px-2 py-1 mt-4 bg-customOrange text-customText font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl">
                     Update
                   </button>
-                  <button
-                    onClick={() => handleDeleteTodo(todo.id)}
-                    className="px-2 py-1 mt-4 bg-red-600 text-white font-semibold border-4 border-red-600 rounded-3xl focus:outline-none focus:ring-1 focus:ring-red-500 text-xl"
-                  >
+                  <button onClick={() => handleDeleteTodo(todo.id)} className="px-2 py-1 mt-4 bg-red-600 text-white font-semibold border-4 border-red-600 rounded-3xl focus:outline-none focus:ring-1 focus:ring-red-500 text-xl">
                     Delete
                   </button>
                 </div>
@@ -101,10 +44,7 @@ const TodosPage: React.FC = () => {
           )}
 
           <div className="flex justify-between items-center py-2">
-            <button
-              onClick={() => router.push('/todos/addlist')}
-              className="text-2xl text-customText"
-            >
+            <button onClick={() => router.push('/todos/addlist')} className="text-2xl text-customText">
               + Add List<span className="text-customText text-4xl">.</span>
             </button>
           </div>

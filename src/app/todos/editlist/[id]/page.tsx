@@ -1,67 +1,13 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
 import Header from '@/components/header/Header';
-import useTodo from '../../../../hooks/useTodos';
-import toast, { Toaster } from 'react-hot-toast';
 import Loader from '@/components/loader/Loader';
-
-interface ParamsType {
-  id: string;
-}
+import { themes } from '@/constants/themeButtons';
+import useEditList from './useEditList';
 
 const EditListPage: React.FC = () => {
-  const params = useParams();
-  const router = useRouter();
-  const { data: session, status } = useSession();
-  const { todos, getTodos, updateTodo, error } = useTodo();
-  const [todoName, setTodoName] = useState<string>('');
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
-  const [localError, setLocalError] = useState<string | null>(null);
-  const [selectedTheme, setSelectedTheme] = useState<string>(''); 
-  const { id } = params as unknown as ParamsType;
-
-  useEffect(() => {
-    if (status === 'authenticated' && session?.user?.email) {
-      getTodos(session.user.email);
-    } else if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    }
-  }, [status, session, getTodos, router]);
-
-  useEffect(() => {
-    if (todos.length > 0 && initialLoad) {
-      const todo = todos.find((todo) => todo.id === id);
-      if (todo) {
-        setTodoName(todo.name);
-        setSelectedTheme(todo.theme); 
-        setInitialLoad(false);
-      }
-    }
-  }, [todos, id, initialLoad]);
-
-  const handleUpdateTodo = async () => {
-    if (session?.user?.email && todoName.trim()) {
-      try {
-        await updateTodo(id, todoName, session.user.email, selectedTheme); 
-        toast.success('List updated successfully!');
-        router.push('/todos/todo');
-      } catch (error) {
-        setLocalError('Failed to update todo');
-      }
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTodoName(e.target.value);
-  };
-
-  const handleThemeChange = (theme: string) => {
-    setSelectedTheme(theme);
-  };
-
+  const { todoName, selectedTheme, error, localError, status, handleChange, handleUpdateTodo, handleThemeChange } = useEditList();
   if (status === 'loading') return <div><Loader /></div>;
 
   return (
@@ -72,54 +18,32 @@ const EditListPage: React.FC = () => {
           <div className='flex items-center justify-center'>
             {error && <p className="text-red-500">{error}</p>}
             {localError && <p className="text-red-500">{localError}</p>}
-            <input
-              type="text"
-              value={todoName}
-              onChange={handleChange}
-              placeholder="[list]"
-              className="w-80 p-2 bg-customBackground text-customText border-4 border-customOrange rounded-xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-3"
-            />
-          </div>
-
-          <div className='flex items-center justify-center mt-6 gap-3'>
-            <button className={`bg-vintage-garden-background text-vintage-garden-primary text-lg border-4 border-vintage-garden-accent rounded-3xl px-4 py-1 ${selectedTheme === 'Vintage Garden' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme(' Vintage Garden')}>
-              Vintage Garden
-            </button>
-            <button className={`bg-cosmic-symphony-background text-cosmic-symphony-primary text-lg border-4 border-cosmic-symphony-accent rounded-3xl px-4 py-1 ${selectedTheme === 'Cosmic Symphony' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Cosmic Symphony')}>
-              Cosmic Symphony
-            </button>
-            <button className={`bg-rustic-charm-background text-rustic-charm-primary text-lg border-4 border-customBlue rounded-3xl px-4 py-1 ${selectedTheme === ' Rustic Charm' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme(' Rustic Charm')}>
-              Rustic Charm
-            </button>
+            <input type="text" value={todoName} onChange={handleChange} placeholder="[list]" className="w-80 p-2 bg-customBackground text-customText border-4 border-customOrange rounded-xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-3" />
           </div>
           <div className='flex items-center justify-center mt-6 gap-3'>
-            <button className={`bg-sunset-serenade-background text-sunset-serenade-primary text-lg border-4 border-sunset-serenade-accent rounded-3xl px-4 py-1 ${selectedTheme === 'Sunset Serenade' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Sunset Serenade')}>
-              Sunset Serenade
-            </button>
-            <button className={`bg-rustic-charm-primary text-industrial-chic-background text-lg border-4 border-industrial-chic-accent rounded-3xl px-4 py-1 ${selectedTheme === 'Industrial Chic' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Industrial Chic')}>
-              Industrial Chic
-            </button>
-            <button className={`bg-blackout-neutrals-primary text-blackout-neutrals-background text-lg border-4 border-blackout-neutrals-accent rounded-3xl px-4 py-1 ${selectedTheme === 'Blackout Neutrals' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Blackout Neutrals')}>
-              Blackout Neutrals
-            </button>
+            {themes.slice(0, 3).map((theme) => (
+              <button key={theme.name} className={`${theme.background} ${theme.primary} text-lg border-4 ${theme.border} rounded-3xl px-4 py-1 ${selectedTheme === theme.name && 'ring-4 ring-customOrange'}`} onClick={() => handleThemeChange(theme.name)}>
+                {theme.name}
+              </button>
+            ))}
           </div>
           <div className='flex items-center justify-center mt-6 gap-3'>
-            <button className={`bg-vibrant-spectrum-background text-vibrant-spectrum-primary text-lg border-4 border-vibrant-spectrum-accent rounded-3xl px-4 py-1  ${selectedTheme === 'Vibrant Spectrum' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Vibrant Spectrum')}>
-              Vibrant Spectrum
-            </button>
-            <button className={`bg-coastal-sunrise-background text-coastal-sunrise-accent text-lg border-4 border-coastal-sunrise-primary rounded-3xl px-4 py-1 ${selectedTheme === 'Coastal Sunrise' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Coastal Sunrise')}>
-            Coastal Sunrise
-            </button>
-            <button className={`bg-oceanic-serenity-background text-oceanic-serenity-primary text-lg border-4 border-oceanic-serenity-accent rounded-3xl px-4 py-1 ${selectedTheme === 'Oceanic Serenity' && 'ring-4 ring-customOrange'}`} onClick={() => setSelectedTheme('Oceanic Serenity')}>
-              Oceanic Serenity
-            </button>
+            {themes.slice(3, 6).map((theme) => (
+              <button key={theme.name} className={`${theme.background} ${theme.primary} text-lg border-4 ${theme.border} rounded-3xl px-4 py-1 ${selectedTheme === theme.name && 'ring-4 ring-customOrange'}`} onClick={() => handleThemeChange(theme.name)}>
+                {theme.name}
+              </button>
+            ))}
+          </div>
+          <div className='flex items-center justify-center mt-6 gap-3'>
+            {themes.slice(6, 9).map((theme) => (
+              <button key={theme.name} className={`${theme.background} ${theme.primary} text-lg border-4 ${theme.border} rounded-3xl px-4 py-1 ${selectedTheme === theme.name && 'ring-4 ring-customOrange'}`} onClick={() => handleThemeChange(theme.name)}>
+                {theme.name}
+              </button>
+            ))}
           </div>
 
           <div className="flex justify-center items-center h-full mt-4">
-            <button
-              onClick={handleUpdateTodo}
-              className="px-6 py-2 mt-4 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl"
-            >
+            <button onClick={handleUpdateTodo} className="px-6 py-2 mt-4 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl" >
               Edit List.
             </button>
           </div>
