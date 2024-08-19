@@ -57,7 +57,6 @@ module.exports = {
         footerText: ['Stint Ultra Condensed', 'cursive', 'serif'],
         paragraph: ['IBM Plex Mono', 'monospace'],
       },
-
       // fontFamily: {
       //   footerText: 'var(--font-footerText)',
       //   paragraph: 'var(--font-paragraph)',
@@ -67,6 +66,11 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    {
+      pattern: /(vintage-garden|cosmic-symphony|rustic-charm|sunset-serenade|industrial-chic|blackout-neutrals|vibrant-spectrum|coastal-sunrise|oceanic-serenity)-(primary|background|accent)/,
+    },
+  ],
   plugins: [
     plugin(function ({ addUtilities }) {
       addUtilities({

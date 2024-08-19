@@ -41,18 +41,11 @@ export type ThemeName =
 
 
   export type Theme = {
+    name: string;
     primary: string;
     background: string;
     accent: string;
-  };
-
-  // export type Theme = {
-  //   background: string;
-  //   text: string;
-  //   accent: string;
-  //   primary: string;  
-  // };
-  
+  };  
   
   export type UseHeaderProps = {
     theme?: Theme;

@@ -14,5 +14,3 @@ export default function NextAuthSessionProvider({
     <SessionProvider>{children}</SessionProvider>
   )
 }
-
-// export default NextAuthSessionProvider;
