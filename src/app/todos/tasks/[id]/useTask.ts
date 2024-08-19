@@ -127,6 +127,10 @@
 // export default useTasksPage;
 
 
+
+
+
+
 import { useEffect, useState } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -146,7 +150,7 @@ const useTasksPage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskName, setTaskName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const currentTheme = themeColors[themeName] || themeColors["Vintage Garden"];
+  const theme = themeColors[themeName] || themeColors["Vintage Garden"];
 
   const getTasks = async (todoId: string) => {
     try {
@@ -248,7 +252,7 @@ const useTasksPage = () => {
     taskName,
     setTaskName,
     todoName,
-    currentTheme,
+    theme,
     tasks,
     error,
     status,

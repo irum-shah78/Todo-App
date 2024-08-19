@@ -1,6 +1,7 @@
 import { ThemeName } from "../types/type"
 
-const themeColors: Record<ThemeName, { primary: string; background: string; accent: string }> = {
+// : Record<ThemeName, { primary: string; background: string; accent: string }>
+const themeColors = {
   "Vintage Garden": {
     primary: "#2D4659",
     background: "#FDFBDA",
