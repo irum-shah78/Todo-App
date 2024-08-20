@@ -34,7 +34,6 @@ export const useProfileSettings = () => {
       });
       return response.data.imageUrl;
     } catch (error) {
-      console.error('Upload error:', error);
       throw new Error('Failed to upload image');
     }
   };

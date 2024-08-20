@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import useTodo from '../../../hooks/useTodos';
+import useTodo from '../../hooks/useTodos';
 import toast from 'react-hot-toast';
 import themeColors from '@/constants/ThemeColors';
 import { ThemeName } from '@/types/type';

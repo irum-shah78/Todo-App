@@ -25,7 +25,6 @@ const useTasksPage = () => {
       setTasks(response.data);
     } catch (err) {
       setError('Error fetching tasks');
-      console.error(err);
     }
   };
 
@@ -35,7 +34,6 @@ const useTasksPage = () => {
       setTasks((prevTasks) => [...prevTasks, response.data]);
     } catch (err) {
       setError('Error adding task');
-      console.error(err);
     }
   };
 
@@ -47,7 +45,6 @@ const useTasksPage = () => {
       );
     } catch (err) {
       setError('Error updating task');
-      console.error(err);
     }
   };
 
@@ -58,7 +55,6 @@ const useTasksPage = () => {
       toast.success('Task deleted successfully!');
     } catch (err) {
       setError('Error deleting task');
-      console.error(err);
     }
   };
 
@@ -72,7 +68,6 @@ const useTasksPage = () => {
         toast.success(newCompletedStatus ? 'Task marked as complete' : 'Task marked as incomplete');
         getTasks(todoId);
       } catch (error) {
-        console.error('Failed to update task:', error);
         toast.error('Failed to update task');
       }
     } else {
@@ -88,7 +83,6 @@ const useTasksPage = () => {
         toast.success('Task added successfully!');
         getTasks(todoId);
       } catch (error) {
-        console.error('Failed to add task:', error);
         toast.error('Failed to add task');
       }
     } else {
@@ -102,7 +96,6 @@ const useTasksPage = () => {
       toast.success('Task deleted successfully!');
       getTasks(todoId);
     } catch (error) {
-      console.error('Failed to delete task:', error);
       toast.error('Failed to delete task');
     }
   };

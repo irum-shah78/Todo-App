@@ -16,7 +16,6 @@ const useTodo = () => {
       setTodos(response.data);
     } catch (err) {
       setError('Error fetching todos');
-      console.error(err);
     }
   };
 
@@ -30,7 +29,6 @@ const useTodo = () => {
       setTodos((prevTodos) => [...prevTodos, response.data]);
     } catch (err) {
       setError('Error adding todo');
-      console.error(err);
     }
   };
 
@@ -46,7 +44,6 @@ const useTodo = () => {
       );
     } catch (err) {
       setError('Error updating todo');
-      console.error(err);
     }
   };
 
@@ -61,7 +58,6 @@ const useTodo = () => {
       return response.data;
     } catch (err) {
       setError('Error deleting todo');
-      console.error(err);
     }
   };
 

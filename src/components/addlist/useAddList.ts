@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import useTodo from '../../../hooks/useTodos';
+import useTodo from '../../hooks/useTodos';
 import { useSession } from 'next-auth/react';
 
 const useAddList = () => {
@@ -23,7 +23,6 @@ const useAddList = () => {
             router.push('/todos/todo');
           }, 2000);
         } catch (error) {
-          console.error('Failed to add list:', error);
           toast.error('Failed to add list');
         }
       } else {

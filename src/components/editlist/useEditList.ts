@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import useTodo from '../../../../hooks/useTodos';
+import useTodo from '../../hooks/useTodos';
 import toast from 'react-hot-toast';
 
 const useEditList = () => {
