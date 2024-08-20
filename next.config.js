@@ -1,8 +1,26 @@
-// next.config.js
+// module.exports = {
+//   images: {
+//     domains: ['lh3.googleusercontent.com', 'localhost', 'example.com'],
+//   },
+// }
+
+
 module.exports = {
-  // images: {
-  //   domains: ['lh3.googleusercontent.com'],
   images: {
-    domains: ['lh3.googleusercontent.com', 'localhost', 'example.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+      },
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+      },
+    ],
   },
-}
+};
