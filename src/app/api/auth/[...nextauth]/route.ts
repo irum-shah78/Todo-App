@@ -7,7 +7,7 @@
 
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { authOptions } from "@/libs/AuthOptions";
+import { authOptions } from "@/libs/authOptions";
 import NextAuth from "next-auth/next";
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
