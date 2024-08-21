@@ -15,26 +15,35 @@ const TodosPage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col font-paragraph bg-customBlack dotted-background overflow-hidden">
       <Header />
-      <div className="flex-grow flex flex-col items-center justify-center bg-center p-6">
-        <h1 className="text-8xl text-customText font-footerText">
+      <div className="flex-grow flex flex-col items-center justify-center bg-center p-4 sm:p-6">
+        <h1 className="text-5xl sm:text-6xl lg:text-8xl text-customText font-footerText">
           Todo Lists<span className="text-customOrange">.</span>
         </h1>
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-xs sm:max-w-md">
           {Array.isArray(todos) && todos.length > 0 ? (
             todos.map((todo) => {
               const themeClassPrefix = (todo.theme as string).toLowerCase().replace(/\s+/g, '-');
               return (
-                <div key={todo.id} className="flex justify-between items-center py-2">
-                  <span onClick={() => handleViewTasks(todo.id, todo.name, todo.theme)} className={`relative text-2xl font-bold cursor-pointer text-white`}>
+                <div key={todo.id} className="flex flex-col sm:flex-row justify-between items-center py-2">
+                  <span
+                    onClick={() => handleViewTasks(todo.id, todo.name, todo.theme)}
+                    className="relative text-lg sm:text-2xl font-bold cursor-pointer text-white"
+                  >
                     {todo.name}
-                    <span className={`absolute left-0 bottom-0 w-full h-[0.2em] bg-${themeClassPrefix}-primary`} />
+                    <span className={`absolute left-0 bottom-0 w-full h-[0.15em] sm:h-[0.2em] bg-${themeClassPrefix}-primary`} />
                   </span>
 
-                  <div className="flex space-x-4">
-                    <button onClick={() => router.push(`/todos/editlist/${todo.id}`)} className="px-2 py-1 mt-4 bg-customOrange text-customText font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl">
+                  <div className="flex space-x-2 sm:space-x-4 mt-2 sm:mt-0">
+                    <button
+                      onClick={() => router.push(`/todos/editlist/${todo.id}`)}
+                      className="px-1 py-1 sm:px-2 sm:py-1 mt-2 sm:mt-4 bg-customOrange text-customText font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-lg sm:text-xl"
+                    >
                       Update
                     </button>
-                    <button onClick={() => handleDeleteTodo(todo.id)} className="px-2 py-1 mt-4 bg-red-600 text-white font-semibold border-4 border-red-600 rounded-3xl focus:outline-none focus:ring-1 focus:ring-red-500 text-xl">
+                    <button
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      className="px-1 py-1 sm:px-2 sm:py-1 mt-2 sm:mt-4 bg-red-600 text-white font-semibold border-4 border-red-600 rounded-3xl focus:outline-none focus:ring-1 focus:ring-red-500 text-lg sm:text-xl"
+                    >
                       Delete
                     </button>
                   </div>
@@ -42,17 +51,18 @@ const TodosPage: React.FC = () => {
               );
             })
           ) : (
-            <p className="text-customText text-lg">{error ? error : 'No todos available'}</p>
+            <p className="text-customText text-base sm:text-lg">{error ? error : 'No todos available'}</p>
           )}
           <div className="flex justify-between items-center py-2">
-            <button onClick={() => router.push('/todos/addlist')} className="text-2xl text-customText">
-              + Add List<span className="text-customText text-4xl">.</span>
+            <button onClick={() => router.push('/todos/addlist')} className="text-xl sm:text-2xl text-customText">
+              + Add List<span className="text-customText text-3xl sm:text-4xl">.</span>
             </button>
           </div>
         </div>
       </div>
       <Toaster position="top-center" reverseOrder={false} />
     </div>
+
   );
 };
 

@@ -23,16 +23,16 @@ export const metadata: Metadata = {
 const ResetPasswordPage = () => {
   return (
     <>
-      <Header />
       <div className="min-h-screen flex flex-col font-paragraph bg-customBlack dotted-background overflow-hidden">
+      <Header />
         <div className="flex-grow flex items-center justify-center bg-center">
           <div className="p-6 w-96">
             <ResetPasswordForm />
           </div>
         </div>
         <div className='flex justify-end mb-4'>
-          <p className='font-footerText text-customFooter text-6xl lg:text-5xl md:text-3xl sm:text-2xl'>
-            Reset Password<span className='text-customOrange text-6xl'>.</span>
+          <p className='font-footerText text-customFooter text-4xl sm:text-3xl md:text-3xl lg:text-6xl'>
+            Reset Password<span className='text-customOrange text-4xl sm:text-6xl md:text-7xl lg:text-8xl'>.</span>
           </p>
         </div>
       </div>

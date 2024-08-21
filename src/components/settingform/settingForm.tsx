@@ -11,11 +11,11 @@ const ProfileSettingsForm: React.FC = () => {
 
   return (
     <div className="flex-grow flex items-center justify-center bg-center">
-      <div className="w-96">
-        <h1 className="text-8xl text-customText font-footerText text-center">
+      <div className="w-full max-w-lg px-4 sm:px-6 lg:px-8">
+        <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl text-customText font-footerText text-center">
           Settings<span className="text-customOrange">.</span>
         </h1>
-        <div className="relative flex flex-col items-center">
+        <div className="relative flex flex-col items-center mt-4">
           <div className="relative w-24 h-24">
             {image ? (
               <Image src={image} alt="Profile" fill style={{ objectFit: 'cover' }} className="rounded-full bg-customText" />
@@ -24,32 +24,31 @@ const ProfileSettingsForm: React.FC = () => {
             )}
             <input type="file" id="fileInput" accept="image/*" onChange={handleImageChange} className="hidden" />
             <label htmlFor="fileInput"
-              className="absolute bottom-0 right-0 cursor-pointer p-1 bg-customOrange rounded-full"
-            >
+              className="absolute bottom-0 right-0 cursor-pointer p-1 bg-customOrange rounded-full">
               <Image src={editIcon} alt="Edit Icon" className="rounded-full" />
             </label>
           </div>
-          <p className=' text-customText text-xl text-center'>Profile Photo</p>
+          <p className="text-customText text-base sm:text-lg md:text-xl text-center mt-2">Profile Photo</p>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="mt-2">
           <div className="space-y-2">
-            <label htmlFor="name" className="block text-customText text-xl ml-6">Name</label>
+            <label htmlFor="name" className="block text-customText text-base sm:text-lg md:text-xl ml-0 sm:ml-4">Name</label>
             <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 bg-customBackground text-customText border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-3" placeholder='Updated name' />
+              className="w-full p-2 bg-customBackground text-customText border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-base sm:placeholder:text-lg md:placeholder:text-xl" placeholder='Updated name' />
           </div>
-          <div className="space-y-2 mt-2">
-            <label htmlFor="email" className="block text-customText text-xl ml-6">Email</label>
+          <div className="space-y-2 mt-4">
+            <label htmlFor="email" className="block text-customText text-base sm:text-lg md:text-xl ml-0 sm:ml-4">Email</label>
             <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 bg-customBackground text-customText border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-xl placeholder:ps-3" />
+              className="w-full p-2 bg-customBackground text-customText border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange placeholder-customText placeholder:text-base sm:placeholder:text-lg md:placeholder:text-xl" />
           </div>
-          <div className="flex justify-center items-center h-full mt-3">
+          <div className="flex justify-center items-center mt-2">
             <button type="button" onClick={handleChangePassword}
-              className="px-6 py-1 mt-4 text-customOrange font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl">
+              className="px-6 py-1 sm:px-6 sm:py-2 mt-4 text-customOrange font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-base sm:text-lg md:text-xl">
               Change Password
             </button>
           </div>
-          <div className="flex justify-center items-center h-full mt-3">
-            <button type="submit" className="px-8 py-1 mt-2 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl" disabled={loading}>
+          <div className="flex justify-center items-center mt-3">
+            <button type="submit" className="px-6 py-1 sm:px-8 sm:py-2 mt-2 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-base sm:text-lg md:text-xl" disabled={loading}>
               {loading ? 'Updating...' : 'Save Changes'}
             </button>
           </div>
@@ -57,6 +56,8 @@ const ProfileSettingsForm: React.FC = () => {
       </div>
       <Toaster />
     </div>
+
+
   );
 };
 

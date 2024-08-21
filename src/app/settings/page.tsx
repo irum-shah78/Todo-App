@@ -31,8 +31,8 @@ const ProfileSettingsPage = () => {
           </div>
         </div>
         <div className="flex justify-end mb-4">
-          <p className="font-footerText text-customFooter text-7xl lg:text-8xl md:text-5xl">
-            settings<span className="text-customOrange">.</span>
+          <p className="font-footerText text-customFooter text-4xl sm:text-6xl lg:text-7xl">
+            settings<span className="text-customOrange text-4xl sm:text-6xl lg:text-7xl">.</span>
           </p>
         </div>
       </div>

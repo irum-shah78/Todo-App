@@ -31,8 +31,8 @@ const ChangePassword = () => {
           </div>
         </div>
         <div className='flex justify-end mb-4'>
-          <p className='font-footerText text-customFooter text-6xl lg:text-5xl md:text-3xl sm:text-2xl'>
-            Change Password<span className='text-customOrange text-6xl'>.</span>
+          <p className='font-footerText text-customFooter text-4xl sm:text-6xl lg:text-7xl'>
+            Change Password<span className='text-customOrange text-4xl sm:text-6xl lg:text-7xl'>.</span>
           </p>
         </div>
       </div>

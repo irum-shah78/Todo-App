@@ -52,7 +52,7 @@ const SignUpForm: React.FC = () => {
       </div>
       <button 
         type="button" 
-        className="w-full p-2 flex items-center text-center bg-customBackground text-customOrange border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl"
+        className="w-full p-2 flex items-center text-center bg-customBackground text-customOrange border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-lg"
       >
         <Image src={googleLogo} alt="Google" className="w-6 h-6 ml-4 mr-4" />
         Sign Up with Google

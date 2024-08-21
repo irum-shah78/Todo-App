@@ -41,7 +41,7 @@ const SignInForm: React.FC = () => {
       <div className='mt-6'>
         <button 
           type="button" 
-          className="w-full p-2 flex items-center text-center bg-customBackground text-customOrange border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl" 
+          className="w-full p-2 flex items-center text-center bg-customBackground text-customOrange border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-lg" 
           onClick={handleGoogleSignIn} 
           disabled={loadingGoogle || loadingCredentials}
         >

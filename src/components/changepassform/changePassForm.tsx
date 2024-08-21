@@ -22,7 +22,7 @@ const ChangePasswordForm: React.FC = () => {
       </div>
       <button 
         type="submit" 
-        className="w-full p-2 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-xl mt-2" 
+        className="w-full p-2 bg-customOrange text-customBackground font-semibold border-4 border-customOrange rounded-3xl focus:outline-none focus:ring-1 focus:ring-customOrange text-lg mt-2 md:text-base sm:text-base" 
         disabled={loading}
       >
         {loading ? "Sending..." : "Send Change Password Link"}
