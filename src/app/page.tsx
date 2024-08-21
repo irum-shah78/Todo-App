@@ -1,4 +1,4 @@
-import { authOptions } from "@/libs/authOptions";
+import { authOptions } from "@/libs/AuthOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import SignUp from "./(auth)/signup/page";
