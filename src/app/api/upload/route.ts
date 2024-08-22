@@ -3,6 +3,41 @@ import path from "path";
 import { NextResponse, NextRequest } from "next/server";
 import { headers } from 'next/headers';
 
+// export async function POST(req: NextRequest) {
+//   try {
+//     const data = await req.formData();
+//     const file = data.get('image') as File | null;
+
+//     if (!file) {
+//       return NextResponse.json({ message: "No image found", success: false });
+//     }
+
+//     const byteData = await file.arrayBuffer();
+//     const buffer = Buffer.from(byteData);
+//     const filename = `${Date.now()}_${file.name}`;
+//     const filePath = path.join(process.cwd(), 'public', 'uploads', filename);
+
+//     await writeFile(filePath, buffer);
+
+//     const headersList = headers();
+//     const host = headersList.get('host');
+//     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+//     const imageUrl = `${protocol}://${host}/uploads/${filename}`;
+
+//     // const protocol = process.env.NODE_ENV === 'production';
+//     // const imageUrl = protocol
+//     //   ? 'https://todo-app-irum.vercel.app'
+//     //   : 'http://localhost:3000';
+
+
+//     return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
+//   } catch (error) {
+//     console.error("Error uploading image:", error);
+//     return NextResponse.json({ message: "Failed to upload image", success: false });
+//   }
+// }
+
+
 export async function POST(req: NextRequest) {
   try {
     const data = await req.formData();
@@ -22,13 +57,11 @@ export async function POST(req: NextRequest) {
     const headersList = headers();
     const host = headersList.get('host');
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    const imageUrl = `${protocol}://${host}/uploads/${filename}`;
-
-    // const protocol = process.env.NODE_ENV === 'production';
-    // const imageUrl = protocol
-    //   ? 'https://todo-app-irum.vercel.app'
-    //   : 'http://localhost:3000';
-
+    const baseUrl =
+      process.env.NODE_ENV === 'production'
+        ? 'https://todo-app-irum.vercel.app'
+        : `${protocol}://${host}`;
+    const imageUrl = `${baseUrl}/uploads/${filename}`;
 
     return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
   } catch (error) {
