@@ -70,10 +70,9 @@ export async function POST(req: NextRequest) {
 
     // Construct the correct URL based on the environment
     const headersList = headers();
-    const host = process.env.NODE_ENV === 'production' 
-      ? 'todo-app-irum.vercel.app' 
-      : headersList.get('host');
-    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    const isProduction = process.env.NODE_ENV === 'production';
+    const host = isProduction ? 'todo-app-irum.vercel.app' : headersList.get('host');
+    const protocol = isProduction ? 'https' : 'http';
     const imageUrl = `${protocol}://${host}/uploads/${filename}`;
 
     return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
