@@ -21,13 +21,13 @@ export async function POST(req: NextRequest) {
 
     const headersList = headers();
     const host = headersList.get('host');
-    // const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    // const imageUrl = `${protocol}://${host}/uploads/${filename}`;
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    const imageUrl = `${protocol}://${host}/uploads/${filename}`;
 
-    const protocol = process.env.NODE_ENV === 'production';
-    const imageUrl = protocol
-      ? 'https://todo-app-irum.vercel.app'
-      : 'http://localhost:3000';
+    // const protocol = process.env.NODE_ENV === 'production';
+    // const imageUrl = protocol
+    //   ? 'https://todo-app-irum.vercel.app'
+    //   : 'http://localhost:3000';
 
 
     return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });

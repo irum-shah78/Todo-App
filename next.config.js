@@ -19,7 +19,7 @@ module.exports = {
       },
       {
         protocol: 'https',
-        hostname: 'example.com',
+        hostname: 'todo-app-irum.vercel.app',
       },
     ],
   },
