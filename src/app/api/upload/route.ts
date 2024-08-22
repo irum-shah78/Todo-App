@@ -6,7 +6,7 @@ import { headers } from 'next/headers';
 export async function POST(req: NextRequest) {
   try {
     const data = await req.formData();
-    const file = data.get('image') as File | null; 
+    const file = data.get('image') as File | null;
 
     if (!file) {
       return NextResponse.json({ message: "No image found", success: false });
@@ -21,8 +21,14 @@ export async function POST(req: NextRequest) {
 
     const headersList = headers();
     const host = headersList.get('host');
-    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    const imageUrl = `${protocol}://${host}/uploads/${filename}`;
+    // const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    // const imageUrl = `${protocol}://${host}/uploads/${filename}`;
+
+    const protocol = process.env.NODE_ENV === 'production';
+    const imageUrl = protocol
+      ? 'https://todo-app-irum.vercel.app'
+      : 'http://localhost:3000';
+
 
     return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
   } catch (error) {
