@@ -68,12 +68,13 @@ export async function POST(req: NextRequest) {
     // Write the file to the server
     await writeFile(filePath, buffer);
 
-    // Construct the correct URL based on the environment
-    const headersList = headers();
+    // Determine environment and set the correct URL
     const isProduction = process.env.NODE_ENV === 'production';
-    const host = isProduction ? 'todo-app-irum.vercel.app' : headersList.get('host');
-    const protocol = isProduction ? 'https' : 'http';
-    const imageUrl = `${protocol}://${host}/uploads/${filename}`;
+    const host = isProduction 
+      ? (process.env.NEXTAUTH_URL!.replace(/\/$/, '')) 
+      : `http://localhost:3000`;
+
+    const imageUrl = `${host}/uploads/${filename}`;
 
     return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
   } catch (error) {
