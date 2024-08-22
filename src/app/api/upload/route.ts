@@ -70,9 +70,10 @@ export async function POST(req: NextRequest) {
 
     // Determine environment and set the correct URL
     const isProduction = process.env.NODE_ENV === 'production';
-    const host = isProduction 
-      ? (process.env.NEXTAUTH_URL!.replace(/\/$/, '')) 
-      : `http://localhost:3000`;
+    const host = process.env.NODE_ENV === 'production'
+    ? (process.env.NEXTAUTH_URL?.replace(/\/$/, '') || 'https://todo-app-irum.vercel.app')
+    : `http://localhost:3000`;
+  
 
     const imageUrl = `${host}/uploads/${filename}`;
 
