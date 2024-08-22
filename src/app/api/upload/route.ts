@@ -20,17 +20,25 @@ export async function POST(req: NextRequest) {
     await writeFile(filePath, buffer);
 
     const headersList = headers();
-    const host = headersList.get('host');
+    const host = process.env.NODE_ENV === 'production' ? 'todo-app-irum.vercel.app' : headersList.get('host');
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
     const imageUrl = `${protocol}://${host}/uploads/${filename}`;
+
+    await writeFile(filePath, buffer);
+
+    return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
+
+
+    // const headersList = headers();
+    // const host = headersList.get('host');
+    // const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    // const imageUrl = `${protocol}://${host}/uploads/${filename}`;
 
     // const protocol = process.env.NODE_ENV === 'production';
     // const imageUrl = protocol
     //   ? 'https://todo-app-irum.vercel.app'
     //   : 'http://localhost:3000';
-
-
-    return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
+    // return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
   } catch (error) {
     console.error("Error uploading image:", error);
     return NextResponse.json({ message: "Failed to upload image", success: false });
