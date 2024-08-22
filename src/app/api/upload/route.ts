@@ -70,12 +70,21 @@ export async function POST(req: NextRequest) {
 
     // Determine environment and set the correct URL
     const isProduction = process.env.NODE_ENV === 'production';
-    const host = process.env.NODE_ENV === 'production'
-    ? (process.env.NEXTAUTH_URL?.replace(/\/$/, '') || 'https://todo-app-irum.vercel.app')
-    : `http://localhost:3000`;
-  
+    // const host = process.env.NODE_ENV === 'production'
+    //   ? (process.env.NEXTAUTH_URL?.replace(/\/$/, '') || 'https://todo-app-irum.vercel.app')
+    //   : `http://localhost:3000`;
 
-    const imageUrl = `${host}/uploads/${filename}`;
+    const headersList = headers();
+    const host = process.env.NODE_ENV === 'production'
+      ? process.env.NEXTAUTH_URL || 'https://todo-app-irum.vercel.app'
+      : headersList.get('host');
+
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    const imageUrl = `${protocol}://${host}/uploads/${filename}`;
+
+
+
+    // const imageUrl = `${host}/uploads/${filename}`;
 
     return NextResponse.json({ message: "Image uploaded", success: true, imageUrl });
   } catch (error) {
