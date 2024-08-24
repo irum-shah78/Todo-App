@@ -63,10 +63,61 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// export async function PUT(req: NextRequest) {
+//   const session = await getServerSession(authOptions);
+
+//   if (!session?.user?.id) {
+//     return NextResponse.json({ error: 'Unauthorized or Invalid session' }, { status: 401 });
+//   }
+
+//   try {
+//     const { name, email, imagePath } = await req.json();
+//     const userId = session.user.id;
+
+//     console.log('Received data:', { userId, name, email, imagePath });
+
+//     if (!userId || !name || !email) {
+//       return NextResponse.json({ error: 'User ID, name, and email are required' }, { status: 400 });
+//     }
+
+//     let uploadedImageUrl;
+
+//     // Handle image upload to Cloudinary
+//     if (imagePath && imagePath.includes(',')) {
+//       try {
+//         const result = await cloudinary.v2.uploader.upload(imagePath, {
+//           folder: 'user_profiles',
+//         });
+//         uploadedImageUrl = result.secure_url;
+//       } catch (err) {
+//         console.error('Error uploading image to Cloudinary:', err);
+//         return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
+//       }
+//     }
+
+//     // Update user with the new data
+//     const updatedUser = await prisma.user.update({
+//       where: { id: userId },
+//       data: {
+//         name,
+//         email,
+//         image: uploadedImageUrl || undefined, // Save the Cloudinary image URL if available
+//       },
+//     });
+
+//     return NextResponse.json({ user: updatedUser });
+//   } catch (error) {
+//     console.error('Failed to update user:', error);
+//     return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
+//   }
+// }
+
+
 export async function PUT(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
+    console.error("Unauthorized: Invalid session or user ID missing");
     return NextResponse.json({ error: 'Unauthorized or Invalid session' }, { status: 401 });
   }
 
@@ -77,37 +128,37 @@ export async function PUT(req: NextRequest) {
     console.log('Received data:', { userId, name, email, imagePath });
 
     if (!userId || !name || !email) {
+      console.error("Validation Error: Missing userId, name, or email");
       return NextResponse.json({ error: 'User ID, name, and email are required' }, { status: 400 });
     }
 
     let uploadedImageUrl;
 
-    // Handle image upload to Cloudinary
     if (imagePath && imagePath.includes(',')) {
       try {
         const result = await cloudinary.v2.uploader.upload(imagePath, {
           folder: 'user_profiles',
         });
         uploadedImageUrl = result.secure_url;
+        console.log('Cloudinary Upload Success:', result);
       } catch (err) {
-        console.error('Error uploading image to Cloudinary:', err);
-        return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
+        console.error('Cloudinary Upload Error:', err);
+        return NextResponse.json({ error: 'Failed to upload image to Cloudinary' }, { status: 500 });
       }
     }
 
-    // Update user with the new data
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
         name,
         email,
-        image: uploadedImageUrl || undefined, // Save the Cloudinary image URL if available
+        image: uploadedImageUrl || undefined,
       },
     });
 
     return NextResponse.json({ user: updatedUser });
   } catch (error) {
-    console.error('Failed to update user:', error);
+    console.error('Error during user update:', error);
     return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
   }
 }
