@@ -35,7 +35,7 @@ export const useSignUp = () => {
       router.push('/signin');
     } catch (error: any) {
       console.error(error);
-      toast.error(error?.response?.data?.message ?? 'An error occurred during registration.');
+      toast.error(error?.response?.data?.message ?? 'User already exist!');
     } finally {
       setLoading(false);
     }
