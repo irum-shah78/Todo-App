@@ -1,7 +1,7 @@
 import { authOptions } from "@/libs/AuthOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import SignUp from "./(auth)/signup/page";
+import SignInPage from "./(auth)/signin/page";
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
@@ -12,7 +12,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      <SignUp />
+      <SignInPage />
     </main>
   );
 }
