@@ -51,7 +51,9 @@ const TodosPage: React.FC = () => {
               );
             })
           ) : (
-            <p className="text-customText text-base sm:text-lg">{error ? error : 'No todos available'}</p>
+            <p className="text-customText text-base sm:text-lg">{error ? error : <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-customText"></div>
+            </div>}</p>
           )}
           <div className="flex justify-between items-center py-2">
             <button onClick={() => router.push('/todos/addlist')} className="text-xl sm:text-2xl text-customText">

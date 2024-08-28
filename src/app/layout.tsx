@@ -18,10 +18,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&family=Stint+Ultra+Expanded&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className={inter.className}>
         <NextAuthSessionProvider>
           <ToastProvider />
-            {children}
+          {children}
         </NextAuthSessionProvider>
       </body>
     </html>

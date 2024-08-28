@@ -93,7 +93,6 @@ const useTasksPage = () => {
   const handleDeleteTask = async (taskId: string) => {
     try {
       await deleteTask(taskId);
-      toast.success('Task deleted successfully!');
       getTasks(todoId);
     } catch (error) {
       toast.error('Failed to delete task');

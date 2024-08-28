@@ -58,10 +58,6 @@ module.exports = {
         footerText: ['Stint Ultra Condensed', 'cursive', 'serif'],
         paragraph: ['IBM Plex Mono', 'monospace'],
       },
-      // fontFamily: {
-      //   footerText: 'var(--font-footerText)',
-      //   paragraph: 'var(--font-paragraph)',
-      // },
       spacing: {
         'underline-height': '0.3em',
       },

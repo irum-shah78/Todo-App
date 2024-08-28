@@ -47,7 +47,7 @@ const TasksPage: React.FC = () => {
                       className={`appearance-none h-6 w-6 p-b-1 bg-${themeClassPrefix}-background border-2 border-${themeClassPrefix}-accent rounded focus:outline-none focus:ring-1 focus:ring-${themeClassPrefix}-accent cursor-pointer`}
                     />
                     {task.completed && (
-                      <span className={`absolute inset-0 flex items-center justify-center text-${themeClassPrefix}-accent`}>
+                      <span className={`absolute inset-0 flex items-center justify-center text-${themeClassPrefix}-accent pointer-events-none`}>
                         ✔
                       </span>
                     )}
@@ -66,7 +66,7 @@ const TasksPage: React.FC = () => {
               </div>
             ))
           ) : (
-            <p className={`text-lg sm:text-xl text-${themeClassPrefix}-primary`}>{error ? error : 'No tasks available'}</p>
+            <p className={`text-lg sm:text-xl text-${themeClassPrefix}-primary`}>{error ? error : <Loader />}</p>
           )}
         </div>
       </div>

@@ -87,7 +87,7 @@ export async function DELETE(req: Request) {
     if (!id) {
       return NextResponse.json({ error: 'ID query parameter is required' }, { status: 400 });
     }
-
+ 
     const task = await prisma.task.findUnique({
       where: { id: String(id) },
     });
