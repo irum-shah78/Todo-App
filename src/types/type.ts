@@ -73,3 +73,11 @@ export type ThemeName =
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   }
+
+  export type InputFields = {
+    label: string;
+    type: string;
+    value: string;
+    onChange: (value: string) => void;
+    placeholder: string;
+  };

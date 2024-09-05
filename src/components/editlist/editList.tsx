@@ -27,35 +27,35 @@ const EditListPage: React.FC = () => {
             />
           </div>
           <div className='flex flex-wrap justify-center mt-6 gap-3'>
-            {themes.slice(0, 3).map((theme) => (
+            {themes?.slice(0, 3).map((theme) => (
               <button
-                key={theme.name}
-                className={`${theme.background} ${theme.primary} text-base sm:text-lg border-4 ${theme.border} rounded-3xl px-4 py-1 ${selectedTheme === theme.name && 'ring-4 ring-customOrange'}`}
-                onClick={() => handleThemeChange(theme.name)}
+                key={theme?.name}
+                className={`${theme?.background} ${theme?.primary} text-base sm:text-lg border-4 ${theme?.border} rounded-3xl px-4 py-1 ${selectedTheme === theme?.name && 'ring-4 ring-customOrange'}`}
+                onClick={() => handleThemeChange(theme?.name)}
               >
-                {theme.name}
+                {theme?.name}
               </button>
             ))}
           </div>
           <div className='flex flex-wrap justify-center mt-6 gap-3'>
-            {themes.slice(3, 6).map((theme) => (
+            {themes?.slice(3, 6).map((theme) => (
               <button
-                key={theme.name}
-                className={`${theme.background} ${theme.primary} text-base sm:text-lg border-4 ${theme.border} rounded-3xl px-4 py-1 ${selectedTheme === theme.name && 'ring-4 ring-customOrange'}`}
-                onClick={() => handleThemeChange(theme.name)}
+                key={theme?.name}
+                className={`${theme?.background} ${theme?.primary} text-base sm:text-lg border-4 ${theme?.border} rounded-3xl px-4 py-1 ${selectedTheme === theme?.name && 'ring-4 ring-customOrange'}`}
+                onClick={() => handleThemeChange(theme?.name)}
               >
-                {theme.name}
+                {theme?.name}
               </button>
             ))}
           </div>
           <div className='flex flex-wrap justify-center mt-6 gap-3'>
-            {themes.slice(6, 9).map((theme) => (
+            {themes?.slice(6, 9).map((theme) => (
               <button
-                key={theme.name}
-                className={`${theme.background} ${theme.primary} text-base sm:text-lg border-4 ${theme.border} rounded-3xl px-4 py-1 ${selectedTheme === theme.name && 'ring-4 ring-customOrange'}`}
-                onClick={() => handleThemeChange(theme.name)}
+                key={theme?.name}
+                className={`${theme?.background} ${theme?.primary} text-base sm:text-lg border-4 ${theme?.border} rounded-3xl px-4 py-1 ${selectedTheme === theme?.name && 'ring-4 ring-customOrange'}`}
+                onClick={() => handleThemeChange(theme?.name)}
               >
-                {theme.name}
+                {theme?.name}
               </button>
             ))}
           </div>
@@ -71,8 +71,8 @@ const EditListPage: React.FC = () => {
         </div>
       </div>
       <div className="flex justify-end mb-4">
-        <p className="font-footerText text-customFooter text-4xl sm:text-6xl md:text-7xl lg:text-8xl">
-          edit list<span className="text-customOrange text-4xl sm:text-6xl md:text-8xl lg:text-8xl">.</span>
+        <p className="font-footerText text-customFooter text-4xl sm:text-5xl md:text-6xl lg:text-6xl">
+          edit list<span className="text-customOrange text-4xl sm:text-5xl md:text-6xl lg:text-6xl">.</span>
         </p>
       </div>
       <Toaster position="top-center" reverseOrder={false} />

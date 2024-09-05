@@ -36,30 +36,30 @@ const TasksPage: React.FC = () => {
           </div>
 
           {Array.isArray(tasks) && tasks.length > 0 ? (
-            tasks.map((task) => (
-              <div key={task.id} className="flex justify-between items-center py-2">
+            tasks?.map((task) => (
+              <div key={task?.id} className="flex justify-between items-center py-2">
                 <div className="flex items-center gap-2">
                   <div className="relative">
                     <input
                       type="checkbox"
-                      checked={task.completed}
-                      onChange={() => handleToggleComplete(task.id)}
+                      checked={task?.completed}
+                      onChange={() => handleToggleComplete(task?.id)}
                       className={`appearance-none h-6 w-6 p-b-1 bg-${themeClassPrefix}-background border-2 border-${themeClassPrefix}-accent rounded focus:outline-none focus:ring-1 focus:ring-${themeClassPrefix}-accent cursor-pointer`}
                     />
-                    {task.completed && (
+                    {task?.completed && (
                       <span className={`absolute inset-0 flex items-center justify-center text-${themeClassPrefix}-accent pointer-events-none`}>
                         ✔
                       </span>
                     )}
                   </div>
                   <span
-                    className={`ml-2 text-xl sm:text-3xl font-bold cursor-pointer underline ${task.completed ? `text-${themeClassPrefix}-accent` : `text-${themeClassPrefix}-primary`}`}
-                    onClick={() => handleToggleComplete(task.id)}>
-                    {task.name}
+                    className={`ml-2 text-xl sm:text-3xl font-bold cursor-pointer underline ${task?.completed ? `text-${themeClassPrefix}-accent` : `text-${themeClassPrefix}-primary`}`}
+                    onClick={() => handleToggleComplete(task?.id)}>
+                    {task?.name}
                   </span>
                 </div>
                 <button
-                  onClick={() => handleDeleteTask(task.id)}
+                  onClick={() => handleDeleteTask(task?.id)}
                   className="px-2 py-1 bg-red-600 text-white font-semibold border-4 border-red-600 rounded-3xl focus:outline-none focus:ring-1 focus:ring-red-500 text-lg sm:text-xl">
                   Delete
                 </button>

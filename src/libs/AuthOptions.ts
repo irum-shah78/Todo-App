@@ -19,14 +19,14 @@ export const authOptions: AuthOptions = {
 
         try {
           const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+            where: { email: credentials?.email },
           });
 
           if (!user || !user.password) {
             throw new Error('Invalid Credentials!');
           }
 
-          const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+          const isPasswordValid = await bcrypt.compare(credentials?.password, user?.password);
           if (!isPasswordValid) {
             throw new Error('Invalid Credentials!');
           }
@@ -56,10 +56,10 @@ export const authOptions: AuthOptions = {
       if (user) {
         return {
           ...token,
-          id: user.id,
-          email: user.email,
-          image: user.image,
-          name: user.name,
+          id: user?.id,
+          email: user?.email,
+          image: user?.image,
+          name: user?.name,
         };
       }
       if (trigger === 'update' && session) {
@@ -69,9 +69,9 @@ export const authOptions: AuthOptions = {
           });
 
           if (updatedUser) {
-            token.name = updatedUser.name;
-            token.email = updatedUser.email;
-            token.image = updatedUser.image;
+            token.name = updatedUser?.name;
+            token.email = updatedUser?.email;
+            token.image = updatedUser?.image;
           }
         } catch (error) {
           console.error('Error fetching updated user:', error);
@@ -82,11 +82,11 @@ export const authOptions: AuthOptions = {
     },
 
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.email = token.email as string;
-        session.user.image = token.image as string;
-        session.user.name = token.name as string;
+      if (session?.user) {
+        session.user.id = token?.id as string;
+        session.user.email = token?.email as string;
+        session.user.image = token?.image as string;
+        session.user.name = token?.name as string;
       }
       return session;
     },
@@ -94,15 +94,15 @@ export const authOptions: AuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         const googleUser = await prisma.user.findUnique({
-          where: { email: user.email as string },
+          where: { email: user?.email as string },
         });
 
         if (!googleUser) {
           await prisma.user.create({
             data: {
-              email: user.email as string,
-              name: user.name || '',
-              image: user.image || '',
+              email: user?.email as string,
+              name: user?.name || '',
+              image: user?.image || '',
             },
           });
         }

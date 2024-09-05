@@ -28,8 +28,8 @@ const useEditList = () => {
     if (todos.length > 0 && initialLoad && id) {
       const todo = todos.find((todo) => todo.id === id);
       if (todo) {
-        setTodoName(todo.name);
-        setSelectedTheme(todo.theme);
+        setTodoName(todo?.name);
+        setSelectedTheme(todo?.theme);
         setInitialLoad(false);
       }
     }
@@ -38,7 +38,7 @@ const useEditList = () => {
   const handleUpdateTodo = async () => {
     if (session?.user?.email && todoName.trim() && id) {
       try {
-        await updateTodo(id, todoName, session.user.email, selectedTheme);
+        await updateTodo(id, todoName, session?.user?.email, selectedTheme);
         toast.success('List updated successfully!');
         router.push('/todos/todo');
       } catch (error) {

@@ -5,8 +5,10 @@ import toast from 'react-hot-toast';
 
 export const useResetPassword = () => {
   const router = useRouter();
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [formData, setFormData] = useState<{ password: string; confirmPassword: string }>({
+    password: '',
+    confirmPassword: '',
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
 
@@ -21,15 +23,23 @@ export const useResetPassword = () => {
     }
   }, [router]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    if (formData?.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
     setLoading(true);
     try {
-      const response = await axios.post('/api/resetpassword', { token, password });
+      const response = await axios.post('/api/resetpassword', { token, password: formData?.password });
       toast.success(response?.data?.message ?? "Password reset successful.");
       router.push("/signin");
     } catch (error: any) {
@@ -39,10 +49,8 @@ export const useResetPassword = () => {
   };
 
   return {
-    password,
-    setPassword,
-    confirmPassword,
-    setConfirmPassword,
+    formData,
+    handleInputChange,
     loading,
     handleSubmit,
   };

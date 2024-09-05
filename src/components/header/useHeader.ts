@@ -8,7 +8,7 @@ const useHeader = ({ theme }: UseHeaderProps): UseHeaderReturn => {
 
   const headerStyle = useMemo(() => {
     if (theme) {
-      return { backgroundColor: theme.background };
+      return { backgroundColor: theme?.background };
     } else {
       return { background: 'navBlack' }; 
     }
@@ -16,7 +16,7 @@ const useHeader = ({ theme }: UseHeaderProps): UseHeaderReturn => {
 
   const tuneNavStyle = useMemo(() => {
     if (theme) {
-      return `mr-6 h-8 w-8 cursor-pointer fill-[${theme.accent}]`;
+      return `mr-6 h-8 w-8 cursor-pointer fill-[${theme?.accent}]`;
     } else {
       return 'mr-6 h-8 w-8 cursor-pointer';
     }

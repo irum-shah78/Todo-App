@@ -14,7 +14,7 @@ const useTodosPage = () => {
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user?.email) {
-      getTodos(session.user.email);
+      getTodos(session?.user?.email);
     } else if (status === 'unauthenticated') {
       router.push('/auth/signin');
     }

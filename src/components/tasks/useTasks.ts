@@ -41,7 +41,7 @@ const useTasksPage = () => {
     try {
       const response = await axios.put('/api/task', { id, name, completed });
       setTasks((prevTasks) =>
-        prevTasks.map((task) => (task.id === id ? { ...task, name: response.data.name, completed: response.data.completed } : task))
+        prevTasks.map((task) => (task?.id === id ? { ...task, name: response?.data?.name, completed: response?.data?.completed } : task))
       );
     } catch (err) {
       setError('Error updating task');
@@ -51,7 +51,7 @@ const useTasksPage = () => {
   const deleteTask = async (id: string) => {
     try {
       await axios.delete(`/api/task?id=${id}`);
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      setTasks((prevTasks) => prevTasks.filter((task) => task?.id !== id));
       toast.success('Task deleted successfully!');
     } catch (err) {
       setError('Error deleting task');
@@ -59,12 +59,12 @@ const useTasksPage = () => {
   };
 
   const handleToggleComplete = async (taskId: string) => {
-    const taskToUpdate = tasks.find((task) => task.id === taskId);
+    const taskToUpdate = tasks.find((task) => task?.id === taskId);
 
     if (taskToUpdate) {
       try {
-        const newCompletedStatus = !taskToUpdate.completed;
-        await updateTask(taskId, taskToUpdate.name, newCompletedStatus);
+        const newCompletedStatus = !taskToUpdate?.completed;
+        await updateTask(taskId, taskToUpdate?.name, newCompletedStatus);
         toast.success(newCompletedStatus ? 'Task marked as complete' : 'Task marked as incomplete');
         getTasks(todoId);
       } catch (error) {

@@ -55,7 +55,7 @@ module.exports = {
         'oceanic-serenity-accent': '#2E4F4F',
       },
       fontFamily: {
-        footerText: ['Stint Ultra Condensed', 'cursive', 'serif'],
+        footerText: ['Stint Ultra Condensed'],
         paragraph: ['IBM Plex Mono', 'monospace'],
       },
       spacing: {

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Stint_Ultra_Condensed, IBM_Plex_Mono } from "next/font/google";
 import NextAuthSessionProvider from "../../providers/NextAuthSessionProvider";
 import ToastProvider from "../../providers/ToastProvider";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const stintUltraCondensed = Stint_Ultra_Condensed({ subsets: ["latin"], weight: "400" });
+const ibmPlexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Todo App",
@@ -18,14 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&family=Stint+Ultra+Expanded&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={inter.className}>
+      <body className={`${stintUltraCondensed.className} ${ibmPlexMono.className}`}>
         <NextAuthSessionProvider>
           <ToastProvider />
           {children}

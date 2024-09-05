@@ -11,7 +11,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.user = action.payload;
+      state.user = action?.payload;
       state.isAuthenticated = true;
     },
     logout: (state) => {
@@ -20,9 +20,9 @@ const authSlice = createSlice({
     },
     updateProfile: (state, action) => {
       if (state.user) {
-        state.user.name = action.payload.name;
-        state.user.email = action.payload.email;
-        state.user.image = action.payload.image;
+        state.user.name = action?.payload?.name;
+        state.user.email = action?.payload?.email;
+        state.user.image = action?.payload?.image;
       }
     },
   },

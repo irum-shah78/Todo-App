@@ -13,7 +13,7 @@ const useTodo = () => {
     }
     try {
       const response = await axiosInstance.get(`/?email=${email}`);
-      setTodos(response.data);
+      setTodos(response?.data);
     } catch (err) {
       setError('Error fetching todos');
     }
@@ -40,7 +40,7 @@ const useTodo = () => {
     try {
       const response = await axiosInstance.put('/', { id, name, email, theme });
       setTodos((prevTodos) =>
-        prevTodos.map((todo) => (todo.id === id ? { ...todo, name: response.data.name, theme: response.data.theme } : todo))
+        prevTodos.map((todo) => (todo?.id === id ? { ...todo, name: response?.data?.name, theme: response?.data?.theme } : todo))
       );
     } catch (err) {
       setError('Error updating todo');
@@ -54,8 +54,8 @@ const useTodo = () => {
     }
     try {
       const response = await axiosInstance.delete(`/${id}`);
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-      return response.data;
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo?.id !== id));
+      return response?.data;
     } catch (err) {
       setError('Error deleting todo');
     }

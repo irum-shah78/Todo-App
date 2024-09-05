@@ -19,7 +19,7 @@ export async function PUT(req: NextRequest) {
 
   try {
     const { name, email, imagePath } = await req.json();
-    const userId = session.user.id;
+    const userId = session?.user?.id;
 
     if (!userId || !name || !email) {
       return NextResponse.json({ error: 'User ID, name, and email are required' }, { status: 400 });

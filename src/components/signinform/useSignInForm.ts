@@ -30,7 +30,7 @@ export const useSignIn = () => {
           router.push('/todos/todo');
         }, 2000);
       } else if (signinResponse?.error) {
-        toast.error(signinResponse.error ?? 'An error occurred during sign-in.');
+        toast.error(signinResponse?.error ?? 'An error occurred during sign-in.');
       }
     } catch (error: any) {
       toast.error(error?.message ?? 'Something went wrong during sign-in.');
