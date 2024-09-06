@@ -13,8 +13,8 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async (email: str
   return response.data;
 });
 
-export const addTodo = createAsyncThunk('todos/addTodo', async ({ name, email }: { name: string, email: string }) => {
-  const response = await axiosInstance.post('/', { name, email });
+export const addTodo = createAsyncThunk('todos/addTodo', async ({ name, email, theme }: { name: string; email: string; theme: string }) => {
+  const response = await axiosInstance.post('/', { name, email, theme });
   return response.data;
 });
 
@@ -24,7 +24,7 @@ export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: string
 });
 
 export const updateTodo = createAsyncThunk('todos/updateTodo', async (todo: Todo) => {
-  const response = await axiosInstance.put(`/${todo?.id}`, todo);
+  const response = await axiosInstance.put(`/${todo.id}`, todo);
   return response.data;
 });
 
@@ -52,7 +52,7 @@ const todoSlice = createSlice({
         state.todos = state?.todos?.filter((todo) => todo?.id !== action?.payload);
       })
       .addCase(updateTodo.fulfilled, (state, action) => {
-        const index = state?.todos?.findIndex((todo) => todo?.id === action?.payload?.id);
+        const index = state?.todos?.findIndex((todo) => todo.id === action?.payload?.id);
         if (index !== -1) {
           state.todos[index] = action?.payload;
         }

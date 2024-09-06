@@ -1,73 +1,56 @@
-import { useState } from 'react';
-import axiosInstance from '../libs/axios';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/useStore';
+import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../store/slices/todoSlice';
 import { Todo } from '@/types/type';
+import { SerializedError } from '@reduxjs/toolkit';
 
 const useTodo = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { todos, status, error } = useAppSelector((state) => state?.todo);
 
-  const getTodos = async (email: string) => {
+  const getTodos = (email: string) => {
     if (!email) {
-      setError('Email is required');
       return;
     }
-    try {
-      const response = await axiosInstance.get(`/?email=${email}`);
-      setTodos(response?.data);
-    } catch (err) {
-      setError('Error fetching todos');
-    }
+    dispatch(fetchTodos(email));
   };
 
-  const addTodo = async (name: string, email: string, underlineColor: string) => {
-    if (!name || !email || !underlineColor) {
-      setError('Name, email, and underlineColor are required');
+  const addNewTodo = (name: string, email: string, theme: string) => {
+    if (!name || !email || !theme) {
       return;
     }
-    try {
-      const response = await axiosInstance.post('/', { name, email, theme: underlineColor });
-      setTodos((prevTodos) => [...prevTodos, response.data]);
-    } catch (err) {
-      setError('Error adding todo');
-    }
+    dispatch(addTodo({ name, email, theme }));
   };
 
-  const updateTodo = async (id: string, name: string, email: string, theme: string) => {
+  const updateExistingTodo = (id: string, name: string, email: string, theme: string) => {
     if (!id || !name || !email || !theme) {
-      setError('ID, name, email, and theme are required');
       return;
     }
-    try {
-      const response = await axiosInstance.put('/', { id, name, email, theme });
-      setTodos((prevTodos) =>
-        prevTodos.map((todo) => (todo?.id === id ? { ...todo, name: response?.data?.name, theme: response?.data?.theme } : todo))
-      );
-    } catch (err) {
-      setError('Error updating todo');
-    }
+    const updatedTodo: Todo = { id, name, email, theme };
+    dispatch(updateTodo(updatedTodo));
   };
 
-  const deleteTodo = async (id: string) => {
+  const removeTodo = (id: string) => {
     if (!id) {
-      setError('ID is required');
       return;
     }
-    try {
-      const response = await axiosInstance.delete(`/${id}`);
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo?.id !== id));
-      return response?.data;
-    } catch (err) {
-      setError('Error deleting todo');
-    }
+    dispatch(deleteTodo(id));
   };
+
+  useEffect(() => {
+    if (status === 'failed' && error) {
+      console.error((error as SerializedError).message);
+    }
+  }, [status, error]);
 
   return {
     todos,
+    status,
     error,
     getTodos,
-    addTodo,
-    updateTodo,
-    deleteTodo,
+    addNewTodo,
+    updateExistingTodo,
+    removeTodo,
   };
 };
 

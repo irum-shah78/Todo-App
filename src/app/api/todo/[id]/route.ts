@@ -1,24 +1,66 @@
-import prisma from '../../../../libs/prismadb';
 import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import prisma from '../../../../libs/prismadb';
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: Request) {
   try {
-    const id = params?.id;
+    const url = new URL(req.url);
+    const id = url.pathname.split('/').pop();
 
     if (!id) {
-      return NextResponse.json({ error: 'ID parameter is required' }, { status: 400 });
+      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
-    await prisma.task.deleteMany({
-      where: { todoId: id },
+
+    const todo = await prisma.todo.findUnique({
+      where: { id: String(id) },
     });
+
+    if (!todo) {
+      return NextResponse.json({ error: 'Todo not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(todo, { status: 200 });
+  } catch (error) {
+    console.error('Error fetching todo:', error);
+    return NextResponse.json({ error: 'Error fetching todo' }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const { id, name, theme } = await req.json();
+
+    if (!id || !name) {
+      return NextResponse.json({ error: 'ID and name are required' }, { status: 400 });
+    }
+
+    const updatedTodo = await prisma.todo.update({
+      where: { id: String(id) },
+      data: { name, theme },
+    });
+
+    return NextResponse.json(updatedTodo, { status: 200 });
+  } catch (error) {
+    console.error('Error updating todo:', error);
+    return NextResponse.json({ error: 'Error updating todo' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const url = new URL(req.url);
+    const id = url.pathname.split('/').pop();
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    }
+
     await prisma.todo.delete({
-      where: { id: id },
+      where: { id: String(id) },
     });
 
     return NextResponse.json({ message: 'Todo deleted successfully' }, { status: 200 });
-  } catch (error: any) {
-    console.error('Error deleting todo:', error?.message ?? 'Unknown error occurred');
+  } catch (error) {
+    console.error('Error deleting todo:', error);
     return NextResponse.json({ error: 'Error deleting todo' }, { status: 500 });
   }
 }

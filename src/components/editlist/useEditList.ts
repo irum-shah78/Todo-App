@@ -8,7 +8,7 @@ const useEditList = () => {
   const params = useParams() as { id?: string };
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { todos, getTodos, updateTodo, error } = useTodo();
+  const { todos, getTodos, updateExistingTodo, error } = useTodo();
   const [todoName, setTodoName] = useState<string>('');
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -26,7 +26,7 @@ const useEditList = () => {
 
   useEffect(() => {
     if (todos.length > 0 && initialLoad && id) {
-      const todo = todos.find((todo) => todo.id === id);
+      const todo = todos.find((todo) => todo?.id === id);
       if (todo) {
         setTodoName(todo?.name);
         setSelectedTheme(todo?.theme);
@@ -38,8 +38,7 @@ const useEditList = () => {
   const handleUpdateTodo = async () => {
     if (session?.user?.email && todoName.trim() && id) {
       try {
-        await updateTodo(id, todoName, session?.user?.email, selectedTheme);
-        toast.success('List updated successfully!');
+        await updateExistingTodo(id, todoName, session?.user?.email, selectedTheme);
         router.push('/todos/todo');
       } catch (error) {
         setLocalError('Failed to update todo');

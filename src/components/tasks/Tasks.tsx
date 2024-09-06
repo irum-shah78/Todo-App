@@ -35,7 +35,7 @@ const TasksPage: React.FC = () => {
             </button>
           </div>
 
-          {Array.isArray(tasks) && tasks.length > 0 ? (
+          {Array.isArray(tasks) && tasks?.length > 0 ? (
             tasks?.map((task) => (
               <div key={task?.id} className="flex justify-between items-center py-2">
                 <div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ const TasksPage: React.FC = () => {
                     )}
                   </div>
                   <span
-                    className={`ml-2 text-xl sm:text-3xl font-bold cursor-pointer underline ${task?.completed ? `text-${themeClassPrefix}-accent` : `text-${themeClassPrefix}-primary`}`}
+                    className={`ml-2 text-xl sm:text-3xl font-bold cursor-pointer underline ${task.completed ? `text-${themeClassPrefix}-accent` : `text-${themeClassPrefix}-primary`}`}
                     onClick={() => handleToggleComplete(task?.id)}>
                     {task?.name}
                   </span>
@@ -66,7 +66,9 @@ const TasksPage: React.FC = () => {
               </div>
             ))
           ) : (
-            <p className={`text-lg sm:text-xl text-${themeClassPrefix}-primary`}>{error ? error : <Loader />}</p>
+            <p className={`text-lg sm:text-xl text-${themeClassPrefix}-primary`}>
+              {error ? error : 'No tasks available.'}
+            </p>
           )}
         </div>
       </div>
@@ -77,8 +79,6 @@ const TasksPage: React.FC = () => {
       </div>
       <Toaster position="top-center" reverseOrder={false} />
     </div>
-
-
   );
 };
 

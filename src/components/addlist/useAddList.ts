@@ -5,7 +5,7 @@ import useTodo from '../../hooks/useTodos';
 import { useSession } from 'next-auth/react';
 
 const useAddList = () => {
-  const { addTodo } = useTodo();
+  const { addNewTodo } = useTodo();
   const { data: session } = useSession();
   const [listName, setListName] = useState('');
   const [selectedTheme, setSelectedTheme] = useState('');
@@ -16,8 +16,9 @@ const useAddList = () => {
       const userEmail = session?.user?.email;
       if (userEmail) {
         try {
-          await addTodo(listName, userEmail, selectedTheme);
+          await addNewTodo(listName, userEmail, selectedTheme);
           setListName('');
+          setSelectedTheme(''); 
           toast.success('List added successfully!');
           setTimeout(() => {
             router.push('/todos/todo');

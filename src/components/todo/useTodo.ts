@@ -7,7 +7,7 @@ import themeColors from '@/constants/ThemeColors';
 import { ThemeName } from '@/types/type';
 
 const useTodosPage = () => {
-  const { todos, error, getTodos, addTodo, deleteTodo } = useTodo();
+  const { todos, error, getTodos, addNewTodo, removeTodo } = useTodo();
   const router = useRouter();
   const { data: session, status } = useSession();
   const [selectedColor, setSelectedColor] = useState<string>('');
@@ -26,7 +26,7 @@ const useTodosPage = () => {
 
   const handleDeleteTodo = async (id: string) => {
     try {
-      await deleteTodo(id);
+      await removeTodo(id);
       toast.success('List deleted successfully!');
     } catch (error) {
       console.error('Error deleting todo:', error);
