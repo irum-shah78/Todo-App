@@ -38,13 +38,14 @@ const useEditList = () => {
   const handleUpdateTodo = async () => {
     if (session?.user?.email && todoName.trim() && id) {
       try {
-        await updateExistingTodo(id, todoName, session?.user?.email, selectedTheme);
+        await updateExistingTodo(id, todoName, selectedTheme);
+        toast.success("List updated syccessfully!");
         router.push('/todos/todo');
       } catch (error) {
         setLocalError('Failed to update todo');
       }
     }
-  };
+  }; 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoName(e.target.value);

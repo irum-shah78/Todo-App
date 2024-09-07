@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/useStore';
 import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../store/slices/todoSlice';
-import { Todo } from '@/types/type';
+import { Todo, TodoUpdate } from '@/types/type';
 import { SerializedError } from '@reduxjs/toolkit';
 
 const useTodo = () => {
@@ -22,12 +22,12 @@ const useTodo = () => {
     dispatch(addTodo({ name, email, theme }));
   };
 
-  const updateExistingTodo = (id: string, name: string, email: string, theme: string) => {
-    if (!id || !name || !email || !theme) {
+  const updateExistingTodo = (id: string, name: string, theme: string) => {
+    if (!id || !name || !theme) {
       return;
     }
-    const updatedTodo: Todo = { id, name, email, theme };
-    dispatch(updateTodo(updatedTodo));
+    const updatedTodo: Partial<Todo> = { id, name, theme };
+    dispatch(updateTodo(updatedTodo as Todo));
   };
 
   const removeTodo = (id: string) => {

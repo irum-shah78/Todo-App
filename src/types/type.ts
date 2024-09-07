@@ -21,6 +21,16 @@ export type Todo = {
   userId: string;
 };
 
+export type TodoUpdate = {
+  id: string;
+  name?: string;
+  theme?: string;
+  title?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  userId?: string;
+};
+
 export type Task = {
   id: string;
   name: string;
