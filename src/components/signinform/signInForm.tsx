@@ -4,12 +4,13 @@ import React from 'react';
 import { useSignIn } from './useSignInForm';
 import googlelogo from "../../../public/assets/icons/google-logo.svg";
 import Image from 'next/image';
+import Link from 'next/link';
 
 const SignInForm: React.FC = () => {
   const { email, setEmail, password, setPassword, loadingCredentials, loadingGoogle, handleSubmit, handleGoogleSignIn } = useSignIn();
 
   return (
-    <form onSubmit={handleSubmit} className="">
+    <form onSubmit={handleSubmit}>
       <div className='mb-4'>
         <label className='block text-customText text-xl ml-6'>Email</label>
         <input 
@@ -57,7 +58,7 @@ const SignInForm: React.FC = () => {
           {loadingCredentials ? "Signing In..." : "Sign In"}
         </button>
         <p className="text-center text-white mt-4">
-          Don&#39;t have an account? <a href="/signup" className="text-orange-500 underline">Sign up</a>
+          Don&#39;t have an account? <Link href="/signup" className="text-orange-500 underline">Sign up</Link>
         </p>
       </div>
     </form>
