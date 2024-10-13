@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 import Header from '@/components/header/Header';
-import ForgetPasswordForm from '../../../components/forgetpassform/forgetPassForm';
+import ForgetPasswordForm from '../../../components/forgetpassform/ForgetPassForm';
 
 export const metadata: Metadata = {
   title: "Forget Password | Todo App",

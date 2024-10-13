@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import AddListPage from '../../../components/addlist/addList';
+import AddListPage from '../../../components/addlist/AddList';
 
 export const metadata: Metadata = {
   title: "Add List | Todo App",

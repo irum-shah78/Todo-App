@@ -20,7 +20,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json(todo, { status: 200 });
   } catch (error) {
-    console.error('Error fetching todo:', error);
     return NextResponse.json({ error: 'Error fetching todo' }, { status: 500 });
   }
 }
@@ -40,7 +39,6 @@ export async function PUT(req: Request) {
 
     return NextResponse.json(updatedTodo, { status: 200 });
   } catch (error) {
-    console.error('Error updating todo:', error);
     return NextResponse.json({ error: 'Error updating todo' }, { status: 500 });
   }
 }
@@ -60,7 +58,6 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ message: 'Todo deleted successfully' }, { status: 200 });
   } catch (error) {
-    console.error('Error deleting todo:', error);
     return NextResponse.json({ error: 'Error deleting todo' }, { status: 500 });
   }
 }

@@ -1,16 +1,23 @@
 import { useSession, signOut } from 'next-auth/react';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { UseHeaderProps, UseHeaderReturn } from '@/types/type';
+
 const useHeader = ({ theme }: UseHeaderProps): UseHeaderReturn => {
   const { data: session, status } = useSession();
 
   const isAuthenticated = status === 'authenticated';
 
+  const themeClassPrefix = useMemo(() => {
+    return theme?.name
+      ? theme.name.toLowerCase().replace(/\s+/g, '-')
+      : 'default';
+  }, [theme]);
+
   const headerStyle = useMemo(() => {
     if (theme) {
       return { backgroundColor: theme?.background };
     } else {
-      return { background: 'navBlack' }; 
+      return { background: 'navBlack' };
     }
   }, [theme]);
 
@@ -29,8 +36,10 @@ const useHeader = ({ theme }: UseHeaderProps): UseHeaderReturn => {
   return {
     headerStyle,
     tuneNavStyle,
+    themeClassPrefix,
     handleSignOut,
     isAuthenticated,
   };
 };
+
 export default useHeader;

@@ -16,7 +16,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json(tasks, { status: 200 });
   } catch (error: any) {
-    console.error('Error fetching tasks:', error?.message ?? 'Unknown error occurred');
     return NextResponse.json({ error: 'Error fetching tasks' }, { status: 500 });
   }
 }
@@ -46,7 +45,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newTask, { status: 201 }); 
   } catch (error: any) {
-    console.error('Error adding task:', error?.message ?? 'Unknown error occurred');
     return NextResponse.json({ error: 'Error adding task' }, { status: 500 });
   }
 }
@@ -74,7 +72,6 @@ export async function PUT(req: Request) {
 
     return NextResponse.json(updatedTask, { status: 200 });
   } catch (error: any) {
-    console.error('Error updating task:', error?.message ?? 'Unknown error occurred');
     return NextResponse.json({ error: 'Error updating task' }, { status: 500 });
   }
 }
@@ -102,7 +99,6 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ message: 'Task deleted successfully' }, { status: 200 });
   } catch (error: any) {
-    console.error('Error deleting task:', error?.message ?? 'Unknown error occurred');
     return NextResponse.json({ error: 'Error deleting task' }, { status: 500 });
   }
 }

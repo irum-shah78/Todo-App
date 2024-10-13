@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { signOut } from 'next-auth/react';
+import { inputFields as FIELDS } from '../../constants/inputFields';
 
 export const useSignUp = () => {
   const router = useRouter();
@@ -60,15 +61,29 @@ export const useSignUp = () => {
     await signup();
   };
 
+  // Map input fields with state values and setters
+  const inputFields = FIELDS.map((field) => ({
+    ...field,
+    value:
+      field?.label === 'Name'
+        ? name
+        : field?.label === 'Email'
+        ? email
+        : field?.label === 'Password'
+        ? password
+        : confirmPassword,
+    onChange:
+      field?.label === 'Name'
+        ? setName
+        : field?.label === 'Email'
+        ? setEmail
+        : field?.label === 'Password'
+        ? setPassword
+        : setConfirmPassword,
+  }));
+
   return {
-    name,
-    setName,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    confirmPassword,
-    setConfirmPassword,
+    inputFields,
     loading,
     handleSubmit,
   };

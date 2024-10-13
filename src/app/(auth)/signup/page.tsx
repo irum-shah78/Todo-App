@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 import HeaderComponent from '../../../components/header/Header';
-import SignUpForm from '../../../components/signupform/signUpForm';
+import SignUpForm from '../../../components/signupform/SignUpForm';
 
 export const metadata: Metadata = {
   title: "Sign Up | Todo App",

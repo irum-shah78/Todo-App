@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Stint_Ultra_Condensed, IBM_Plex_Mono } from "next/font/google";
 import NextAuthSessionProvider from "../../providers/NextAuthSessionProvider";
 import ToastProvider from "../../providers/ToastProvider";
-import { StoreProvider } from "../../providers/StoreProvider"; // Import StoreProvider
+import { StoreProvider } from "../../providers/StoreProvider";
 import "./globals.css";
 
 const stintUltraCondensed = Stint_Ultra_Condensed({ subsets: ["latin"], weight: "400" });

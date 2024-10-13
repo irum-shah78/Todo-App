@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import React from 'react';
-import ProfileSettingsForm from '../../components/settingform/settingForm';
+import ProfileSettingsForm from '../../components/settingform/SettingForm';
 import Header from '@/components/header/Header';
 
 export const metadata: Metadata = {

@@ -29,7 +29,7 @@ const useTodosPage = () => {
       await removeTodo(id);
       toast.success('List deleted successfully!');
     } catch (error) {
-      console.error('Error deleting todo:', error);
+      throw new Error('Error deleting todo!');
     }
   };
 

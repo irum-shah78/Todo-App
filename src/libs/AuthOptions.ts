@@ -33,7 +33,6 @@ export const authOptions: AuthOptions = {
 
           return user;
         } catch (error) {
-          console.error('Authorize error:', error);
           throw new Error('Authentication failed, please try again.');
         }
       },
@@ -52,7 +51,6 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      console.log("session in jwt callback", session);
       if (user) {
         return {
           ...token,
@@ -74,7 +72,7 @@ export const authOptions: AuthOptions = {
             token.image = updatedUser?.image;
           }
         } catch (error) {
-          console.error('Error fetching updated user:', error);
+          throw new Error('Error updating user!');
         }
       }
 

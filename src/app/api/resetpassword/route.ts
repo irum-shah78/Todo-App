@@ -44,7 +44,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Password has been changed successfully' }, { status: 200 });
   } catch (error: any) {
-    console.error('Error updating password:', error?.message ?? 'Unknown error occurred');
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }

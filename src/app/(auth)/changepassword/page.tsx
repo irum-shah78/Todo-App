@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 import Header from '@/components/header/Header';
-import ChangePasswordForm from '../../../components/changepassform/changePassForm';
+import ChangePasswordForm from '../../../components/changepassform/ChangePassForm';
 
 export const metadata: Metadata = {
   title: "Change Password | Todo App",

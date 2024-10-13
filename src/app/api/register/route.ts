@@ -34,7 +34,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newUser);
   } catch (error: any) {
-    console.error("REGISTER_ERROR:", error?.message ?? "Unknown error occurred");
     return new NextResponse("Server Error", { status: 500 });
   }
 }
